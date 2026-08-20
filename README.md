@@ -85,8 +85,27 @@
 | `Capture.Enabled` | true | 捕获未翻译日文到 pending.json |
 | `Capture.LogLimit` | 30 | 每次运行写入 BepInEx 日志的未翻译条数上限（0 关闭） |
 | `AutoTranslate.Enabled` | true | 后台自动百度翻译未命中 core，实时入库生效 |
-| `AutoTranslate.BaiduAppId` | 内置 | 百度翻译开放平台 APP ID（fanyi-api.baidu.com） |
-| `AutoTranslate.BaiduAppKey` | 内置 | 百度翻译开放平台密钥 |
+| `AutoTranslate.BaiduAppId` | 空 | 百度翻译开放平台 APP ID，**需自填**（见下） |
+| `AutoTranslate.BaiduAppKey` | 空 | 百度翻译开放平台密钥，与 AppId 配套，**需自填**（见下） |
+
+### 配置自己的翻译 key（自动翻译）
+
+自动翻译使用百度翻译开放平台「通用翻译API - 标准版」（免费额度，QPS=1，个人可申请）：
+
+1. 注册并登录 [fanyi-api.baidu.com](https://fanyi-api.baidu.com/)，开通「通用翻译API」标准版；
+2. 在控制台「开发者信息」页拿到 `APP ID` 与 `密钥`；
+3. 编辑 `BepInEx/config/benson.muvluvuitranslate.cfg`，填入后保存：
+
+```ini
+[AutoTranslate]
+Enabled = true
+BaiduAppId = 你的APPID
+BaiduAppKey = 你的密钥
+```
+
+4. 重启游戏，BepInEx 日志出现 `[auto] 后台自动翻译已启动` 即生效。
+
+两个凭据留空时自动翻译不启动（捕获与词典翻译不受影响，可配合 `tools/` 离线脚本工作流）。凭据只存在本机 cfg，词典与 pending 全部本地文件，插件不向百度以外的地址发送任何数据。
 
 ## 翻译工作流（全自动闭环）
 
