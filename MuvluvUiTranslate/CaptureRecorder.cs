@@ -85,6 +85,28 @@ public static class CaptureRecorder
         }
     }
 
+    /// <summary>锁内快照全部 pending 条目（core, 出现次数），供 AutoTranslator 后台线程消费。</summary>
+    public static List<(string Text, int Count)> SnapshotPending()
+    {
+        lock (Gate)
+        {
+            var list = new List<(string, int)>(_entries.Count);
+            foreach (var kv in _entries)
+                list.Add((kv.Key, kv.Value.Count));
+            return list;
+        }
+    }
+
+    /// <summary>消费一条 pending（翻译已入库/已在词典），随下一次 Flush 落盘。</summary>
+    public static void Remove(string text)
+    {
+        lock (Gate)
+        {
+            if (_entries.Remove(text))
+                _dirty = true;
+        }
+    }
+
     public static void Flush()
     {
         lock (Gate)

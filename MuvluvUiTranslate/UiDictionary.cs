@@ -39,6 +39,7 @@ public static class UiDictionary
 
     private static volatile Snapshot _snapshot = Snapshot.Empty;
     private static string _dictionaryPath;
+    private static readonly object FileGate = new(); // AddEntry 读改写文件的串行化
 
     public static int ExactCount => _snapshot.Exact.Count;
     public static int PatternCount => _snapshot.Patterns.Length;
@@ -118,6 +119,115 @@ public static class UiDictionary
 
     /// <summary>该串是否已是本词典的译文（防止自身译文被重复捕获/翻译）。</summary>
     public static bool IsKnownTranslation(string text) => _snapshot.Values.Contains(text);
+
+    /// <summary>自动翻译发送前查重守卫：已在词典（含恒等条目/手工条目）则无需调 API。</summary>
+    public static bool NeedsAutoTranslate(string text) => !_snapshot.Exact.ContainsKey(text);
+
+    /// <summary>
+    /// 运行时新增词条（AutoTranslator 后台线程调用）：读现文件 → 改 exact → 原子写回 → 刷新快照。
+    /// 读改写保留文件中的 _ 元键、patterns 与手工条目；exact 键排序保证输出稳定；
+    /// key 已存在时只刷新快照不重写；恒等条目（jp==cn）同样写入（额度 conservation）。
+    /// </summary>
+    public static void AddEntry(string jp, string cn)
+    {
+        lock (FileGate)
+        {
+            try
+            {
+                var (meta, exact, patternRaws) = ReadFileForUpdate();
+                if (!exact.ContainsKey(jp))
+                {
+                    exact[jp] = cn;
+                    WriteFile(meta, exact, patternRaws);
+                }
+                Load(); // 快照与磁盘对齐（含本轮新条目）
+            }
+            catch (Exception e)
+            {
+                Plugin.Log.LogWarning($"AddEntry failed for {jp}: {e.Message}");
+            }
+        }
+    }
+
+    private static (
+        List<(string Name, string Raw)> Meta,
+        Dictionary<string, string> Exact,
+        List<string> PatternRaws
+    ) ReadFileForUpdate()
+    {
+        var meta = new List<(string, string)>();
+        var exact = new Dictionary<string, string>(StringComparer.Ordinal);
+        var patternRaws = new List<string>();
+
+        if (File.Exists(_dictionaryPath))
+        {
+            using var doc = JsonDocument.Parse(
+                File.ReadAllText(_dictionaryPath),
+                new JsonDocumentOptions { AllowTrailingCommas = true, CommentHandling = JsonCommentHandling.Skip }
+            );
+            foreach (var prop in doc.RootElement.EnumerateObject())
+            {
+                if (prop.Name.StartsWith("_"))
+                    meta.Add((prop.Name, prop.Value.GetRawText()));
+                else if (prop.Name == "exact")
+                {
+                    foreach (var item in prop.Value.EnumerateObject())
+                    {
+                        if (!item.Name.StartsWith("_"))
+                            exact[item.Name] = item.Value.GetString();
+                    }
+                }
+                else if (prop.Name == "patterns")
+                {
+                    foreach (var item in prop.Value.EnumerateArray())
+                        patternRaws.Add(item.GetRawText());
+                }
+            }
+        }
+        return (meta, exact, patternRaws);
+    }
+
+    private static void WriteFile(
+        List<(string Name, string Raw)> meta,
+        Dictionary<string, string> exact,
+        List<string> patternRaws
+    )
+    {
+        var sorted = new SortedDictionary<string, string>(exact, StringComparer.Ordinal);
+        var temp = _dictionaryPath + ".tmp";
+        using (var stream = File.Create(temp))
+        using (
+            var writer = new Utf8JsonWriter(
+                stream,
+                new JsonWriterOptions
+                {
+                    Indented = true,
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                }
+            )
+        )
+        {
+            writer.WriteStartObject();
+            foreach (var (name, raw) in meta)
+            {
+                writer.WritePropertyName(name);
+                writer.WriteRawValue(raw);
+            }
+            writer.WriteStartObject("exact");
+            foreach (var kv in sorted)
+            {
+                writer.WritePropertyName(kv.Key);
+                writer.WriteStringValue(kv.Value);
+            }
+            writer.WriteEndObject();
+            writer.WriteStartArray("patterns");
+            foreach (var raw in patternRaws)
+                writer.WriteRawValue(raw);
+            writer.WriteEndArray();
+            writer.WriteEndObject();
+        }
+        File.Move(temp, _dictionaryPath, overwrite: true);
+    }
 
     /// <summary>
     /// 双层级翻译：① 整串 patterns——跨标签/数字模板逃生舱（re 原样匹配、可含标签）；

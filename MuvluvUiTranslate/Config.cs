@@ -9,6 +9,9 @@ public static class Config
     public static ConfigEntry<bool> TranslationEnabled { get; private set; }
     public static ConfigEntry<bool> CaptureEnabled { get; private set; }
     public static ConfigEntry<int> CaptureLogLimit { get; private set; }
+    public static ConfigEntry<bool> AutoTranslateEnabled { get; private set; }
+    public static ConfigEntry<string> BaiduAppId { get; private set; }
+    public static ConfigEntry<string> BaiduAppKey { get; private set; }
 
     public static void Initialize(ConfigFile config)
     {
@@ -33,6 +36,27 @@ public static class Config
             "LogLimit",
             30,
             "每次游戏运行写入 BepInEx 日志的未翻译条目数上限（便于首轮排查，0 关闭）"
+        );
+
+        AutoTranslateEnabled = config.Bind(
+            "AutoTranslate",
+            "Enabled",
+            true,
+            "自动翻译：后台线程逐条调用百度翻译（jp→zh，1条/秒），把捕获的未翻译 core 实时写入词典并即时生效"
+        );
+
+        BaiduAppId = config.Bind(
+            "AutoTranslate",
+            "BaiduAppId",
+            "",
+            "百度翻译开放平台 APP ID（fanyi-api.baidu.com，免费版 QPS=1）"
+        );
+
+        BaiduAppKey = config.Bind(
+            "AutoTranslate",
+            "BaiduAppKey",
+            "",
+            "百度翻译开放平台密钥"
         );
     }
 

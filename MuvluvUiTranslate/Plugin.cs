@@ -11,7 +11,7 @@ public class Plugin : BasePlugin
 {
     public const string PluginGuid = "benson.muvluvuitranslate";
     public const string PluginName = "MuvluvUiTranslate";
-    public const string PluginVersion = "0.1.2";
+    public const string PluginVersion = "0.1.3";
 
     public static new ManualLogSource Log;
     public static string PluginDirectory;
@@ -35,15 +35,20 @@ public class Plugin : BasePlugin
 
         AddComponent<UiTranslateManager>();
 
+        // pending 里未入库的历史欠账由 worker 首轮自动补翻
+        AutoTranslator.Start();
+
         Log.LogInfo(
             $"{PluginName} {PluginVersion} loaded. "
                 + $"Dictionary: {UiDictionary.ExactCount} exact / {UiDictionary.PatternCount} patterns. "
+                + $"AutoTranslate: {(AutoTranslator.IsRunning ? "on" : "off")}. "
                 + $"Directory: {PluginDirectory}"
         );
     }
 
     public override bool Unload()
     {
+        AutoTranslator.Stop(); // 先停 worker，再落盘捕获，避免卸载期间继续写词典
         CaptureRecorder.Flush();
         _harmony?.UnpatchSelf();
         Log.LogInfo($"{PluginName} unloaded");
