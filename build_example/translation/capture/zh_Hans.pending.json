@@ -1,0 +1,2050 @@
+{
+  "ID:タップで表示": {
+    "count": 1,
+    "components": [
+      "IDCoverText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ワールド04-07": {
+    "count": 3,
+    "components": [
+      "ServerNameText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "キャラ名": {
+    "count": 1,
+    "components": [
+      "NameText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "テキスト": {
+    "count": 2,
+    "components": [
+      "NameText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "表示テスト": {
+    "count": 2,
+    "components": [
+      "AffiliationText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "サウンド": {
+    "count": 4,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "シナリオ": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_blue_left> サウンド": {
+    "count": 2,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "全音量ミュート\n": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ボイス": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "サウンド設定を全て初期化します。": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "初期設定にもどす": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "意識が遠のいた後、目が覚めると見知らぬ空間にいた。\nここはどこだ…ここにいても仕方ない。ひとまず進もう…": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "シナリオ再生": {
+    "count": 17,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "クエスト開始": {
+    "count": 30,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "0-3クリアで獲得！": {
+    "count": 4,
+    "components": [
+      "Condition"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "クリア報酬": {
+    "count": 10,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "プロローグ": {
+    "count": 17,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "スタンプが送信されました": {
+    "count": 47,
+    "components": [
+      "LogText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "あと11日14時間": {
+    "count": 373,
+    "components": [
+      "ExpireDateText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "あと4日14時間": {
+    "count": 246,
+    "components": [
+      "ExpireDateText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "今、いきます…！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "クエスト準備": {
+    "count": 7,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "大丈夫ですか！？\n……聞こえてないみたい。ここは私が撃退しないと！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メインクエスト【NORMAL】 0-3": {
+    "count": 2,
+    "components": [
+      "Body"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "お任せ編成": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "クリア編成確認": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "こねこねこねこねこねこねこ": {
+    "count": 2,
+    "components": [
+      "Label"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ここは私から攻撃を仕掛けます！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ブーストトリガー": {
+    "count": 6,
+    "components": [
+      "Label"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "与ダメージアップ": {
+    "count": 12,
+    "components": [
+      "Damage Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_pink_left> メインクエスト1-8クリアでスキップ機能が解放されます <sprite name=wing_pink_right>": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "トライパルスショット": {
+    "count": 6,
+    "components": [
+      "Label"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "防御力アップ": {
+    "count": 6,
+    "components": [
+      "Damage Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ひっかく": {
+    "count": 1,
+    "components": [
+      "Label"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "よしっ…耐えられました！次の攻撃で倒れて……！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メインクエストクリアやバトルシミュレートを2回クリアでLVアップ！": {
+    "count": 2,
+    "components": [
+      "Description"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メインクエストクリアやバトルシミュレートを<color=#fa3c8c>5回</color>クリアでLVアップ！": {
+    "count": 2,
+    "components": [
+      "Description"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite=5>指揮官ランク": {
+    "count": 2,
+    "components": [
+      "Label"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "次へ": {
+    "count": 4,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ホームへ": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ああ、さっきの人が倒れて……！\u3000一度降りて、様子を見て来ます！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "めるさん！MGから降りるのは危険ですわ…！": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "0-5クリアで獲得！": {
+    "count": 4,
+    "components": [
+      "Condition"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "みなさん気を付けて下さい！\nメイズシフターの大群が接近しています！！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "シールド持ちはタンク役として前衛へ！\n君は支援役として後衛へ下がって、チャンスを作るんだ！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メインクエスト【NORMAL】 0-5": {
+    "count": 2,
+    "components": [
+      "Body"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "私が後衛ですか！？わ、わかりました！": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<size=40><color=#fa3c8c>ーポジションについてー</color></size>\nバトル中のターゲットは前衛のユニットを基本的に優先します。タンクのキャラクターを前衛に配置しましょう。": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<size=40><color=#fa3c8c>ー属性についてー</color></size>\n属性はそれぞれ有利不利の関係が存在します。\n敵の属性を見て有利属性のキャラクターを配置しましょう。": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ロール": {
+    "count": 6,
+    "components": [
+      "Text (TMP)",
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<size=40><color=#fa3c8c>ーロールについてー</color></size>\nキャラクターは5つのロールに分けられています。\n躓いた場合、それぞれの特性を意識して配置してみましょう。": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<size=40>物理アタッカー</size>\n物理攻撃を扱いダメージを出すことに特化したロール": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<size=40>ENアタッカー</size>\nEN攻撃を扱いダメージを出すことに特化したロール": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<size=40>タンク</size>\n高い耐久力で攻撃を引き受け、味方を守ることに特化したロール": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<size=40>サポート</size>\n味方の強化や回復などを行う、支援に特化したロール": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<size=40>コントロール</size>\n状態異常や妨害などを行う、行動阻害に特化したロール": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<color=#fa3c8c>ー戦闘の流れについてー</color>\n戦闘内での行動順はキャラクターの行動速度で決まります": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "まだ終わんないけど？": {
+    "count": 1,
+    "components": [
+      "Label"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "行動速度アップ": {
+    "count": 2,
+    "components": [
+      "Damage Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "攻撃力アップ": {
+    "count": 4,
+    "components": [
+      "Damage Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "攻撃力ダウン": {
+    "count": 8,
+    "components": [
+      "Damage Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "食いしばり": {
+    "count": 2,
+    "components": [
+      "Damage Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ヘドロボール": {
+    "count": 4,
+    "components": [
+      "Label"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "行動順が回ってくると、そのキャラクターの\n<color=#ff1c0b>「アクティブスキル」</color>が発動します": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "クライシスドライブ": {
+    "count": 3,
+    "components": [
+      "Label"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<color=#ff1c0b>「アクティブスキル」</color>を発動すると\n<color=#ff1c0b>AP（アクティブポイント）</color>を消費します": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "トゲキャノン": {
+    "count": 1,
+    "components": [
+      "Label"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "なめまわし": {
+    "count": 1,
+    "components": [
+      "Label"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<color=#0096ff>「パッシブスキル」</color>を発動すると\n<color=#0096ff>PP（パッシブポイント）</color>を消費します": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<color=#fa3c8c>「自身がアクティブスキルで攻撃する前」</color>などの\n特定条件に応じて<color=#0096ff>「パッシブスキル」</color>が発動します": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "サイケビーム": {
+    "count": 1,
+    "components": [
+      "Label"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<color=#fa3c8c>EXゲージ（エクストラゲージ）</color>はAP・PPを消費すると\n消費量に合わせてEXゲージが蓄積されていきます。": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "全員のAP（アクティブポイント）が無くなると\nターンが終了し、AP・PPを回復し次のターンへ移行します": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "EXゲージ（エクストラゲージ）がたまると\n次の行動でエクストラスキルを発動します。": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "あっかんべー♡": {
+    "count": 2,
+    "components": [
+      "Label"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "1-7クリアで獲得！": {
+    "count": 12,
+    "components": [
+      "Condition"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_blue_left>名前の入力<sprite name=wing_blue_right>": {
+    "count": 2,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "名前を入力してください": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "※絵文字や記号は、正常に表示されない可能性があります": {
+    "count": 1,
+    "components": [
+      "Text (TMP) (1)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "※名前は後で変更する事ができます": {
+    "count": 1,
+    "components": [
+      "AttentionText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "生徒会長がお待ちです。失礼のない様にして下さいね。": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "改めてよろしくお願いします！！\n超高性能AIのピコがお世話させていただきます！！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "さっそくですが、シリウスシュガーのみなさんを迎えにいきましょう！": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "アカウント管理": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "プロフィール設定": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ホーム設定": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ヘルプ": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "コード入力": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "お問い合わせ": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "スマート\nデバイス": {
+    "count": 3,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "プレゼント": {
+    "count": 3,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ミッション": {
+    "count": 3,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "フレンド": {
+    "count": 3,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "サークル": {
+    "count": 7,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "エピソード": {
+    "count": 10,
+    "components": [
+      "Text",
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "クエスト": {
+    "count": 11,
+    "components": [
+      "Text",
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "アイテム": {
+    "count": 7,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ガチャ": {
+    "count": 9,
+    "components": [
+      "Text",
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ショップ": {
+    "count": 7,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "チームデータが\n届きました！": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ピコピコピーン！": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "アグレッシブ": {
+    "count": 3,
+    "components": [
+      "Text",
+      "HeadText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ENタイプ": {
+    "count": 4,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ENアタッカー": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "スタイルカード獲得": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "タイプ": {
+    "count": 5,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "スマート": {
+    "count": 3,
+    "components": [
+      "Text",
+      "HeadText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "サポート": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "シャイ": {
+    "count": 5,
+    "components": [
+      "Text",
+      "HeadText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "物理タイプ": {
+    "count": 4,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "タンク": {
+    "count": 4,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "キュート": {
+    "count": 3,
+    "components": [
+      "Text",
+      "HeadText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "敏捷タイプ": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "物理アタッカー": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "すでに獲得済の生徒はスタイルカードに変換されます。": {
+    "count": 1,
+    "components": [
+      "CautionText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "シリウスシュガーのみなさんと合流できましたね！\nそれじゃあ生徒会長に報告にいきましょう！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "生徒詳細の解放条件を満たしました！": {
+    "count": 2,
+    "components": [
+      "Body"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メインストーリー": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "画面タップで続ける": {
+    "count": 1,
+    "components": [
+      "NextPerformanceText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "シリウスシュガーのみなさんとこれから出撃するわけですが\n一緒に苦楽を共にする仲間との親愛度をさきに深めましょう！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ピコピコピーン！！\nピコは全て理解しました！マスターの気に入った生徒と仲を深めにいきましょう！今ならいけます！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "理解って何をだよ…！？": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "いいからいいから～！！きっと仲良くなれますよ！！": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ここでプレゼントをあげることで親愛度を深められますよ！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "親愛度ボーナス": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "リセット": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "全リセット": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "おまかせ": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "贈る": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "みんな大好きな「ギフトカード」をあげちゃいます！\nプレゼントしてみましょう！": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "以下の報酬を獲得しました": {
+    "count": 4,
+    "components": [
+      "ConfirmationText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ピコに「おまかせ」してくれれば、生徒の好きなものを優先的に選び、親愛度を１段階上昇するように選択します！！": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ギフトカード": {
+    "count": 2,
+    "components": [
+      "ItemDetailText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_blue_left> アイテムを自動選択しました <sprite name=wing_blue_right>": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "MAXを選択して、親愛度を上げられるだけ上げてみましょう！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "桃园梅露のシナリオ解放！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "マスター！Tweetyに更新があったようですよ！！\n確認してみましょう！！": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メイン": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "イベント": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "コメントを選択してください": {
+    "count": 1,
+    "components": [
+      "UserReplySelectionText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_pink_left> コメントを選択してください <sprite name=wing_pink_right>": {
+    "count": 10,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "生徒から呼ばれているみたいなので、さっそく行ってみましょう！！": {
+    "count": 3,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "エピソードへ": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<size=36>桃园梅露\n[冒失又纯真的未来王牌]の\nキャラクターエピソードが開放されました</size>": {
+    "count": 2,
+    "components": [
+      "Body"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "お出かけ後に電話が鳴っていますよ？\nあとでを選んで閉じてもまたTALKから通話できますからね！": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ジェム": {
+    "count": 1,
+    "components": [
+      "ItemDetailText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "あとで": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "それじゃあ二人の仲も深まったという事で\nホームに戻って準備が出来たら出撃しましょう♪": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メインクエストNORMAL1章1-3をクリアする": {
+    "count": 3,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "フィルタOFF": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "閲覧する": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メイン\nエピソード": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "イベント\nエピソード": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "キャラクター\nエピソード": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メモリー\nエピソード": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【解放条件】\nメインクエストをクリア": {
+    "count": 2,
+    "components": [
+      "Lock Body Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【解放条件】\nメインクエスト6-37をクリア": {
+    "count": 1,
+    "components": [
+      "Lock Body Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【解放条件】\nメインクエスト3-36をクリア": {
+    "count": 1,
+    "components": [
+      "Lock Body Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【解放条件】\nメインクエスト1-6をクリア": {
+    "count": 1,
+    "components": [
+      "Lock Body Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メインクエストNORMAL1章1-3をクリアする<space=1.5em>メインクエストNORMAL1章1-3をクリアする": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ユーザー30ＰＴ全角ああ": {
+    "count": 1,
+    "components": [
+      "UserName"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "サークル未解放": {
+    "count": 6,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<size=24>未開拓エリア</size>\n解放中": {
+    "count": 3,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "第<color=#0096ff>1</color>エリア": {
+    "count": 6,
+    "components": [
+      "ProgressText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "あと9日99時間": {
+    "count": 6,
+    "components": [
+      "ExpireDateText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【1回限定】ウェルカムSSRガチャチケットパック＋": {
+    "count": 2,
+    "components": [
+      "NameText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "残り28日14時間19分": {
+    "count": 8,
+    "components": [
+      "TimeText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【1回限定】ウェルカムSSRガチャチケットパック": {
+    "count": 2,
+    "components": [
+      "NameText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ランキング": {
+    "count": 2,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "集計中です": {
+    "count": 10,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メインクエストハード": {
+    "count": 1,
+    "components": [
+      "HeadText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メイズ探索": {
+    "count": 1,
+    "components": [
+      "HeadText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "バトルシミュレート": {
+    "count": 1,
+    "components": [
+      "HeadText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "コミカル": {
+    "count": 1,
+    "components": [
+      "HeadText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "クレバー": {
+    "count": 1,
+    "components": [
+      "HeadText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メインクエスト": {
+    "count": 1,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "最新ログを表示予定です": {
+    "count": 1,
+    "components": [
+      "LogText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_blue_left>お知らせ<sprite name=wing_blue_right>": {
+    "count": 3,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "公式MG競技の挑戦回数の変更について": {
+    "count": 3,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メンテナンス完了のお知らせ": {
+    "count": 3,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "インフォメーション": {
+    "count": 6,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "8月18日のアップデートについて": {
+    "count": 3,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "アップデート": {
+    "count": 3,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "終了まであと99日": {
+    "count": 2,
+    "components": [
+      "ExpireDateText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "終了まであと10時間": {
+    "count": 1,
+    "components": [
+      "ExpireDateText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "LIMITED CHARACTERピックアップガチャ【鎧衣美琴】開催！": {
+    "count": 1,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "NEW CHARACTERピックアップガチャ【ロージー・ヒューズ】開催！": {
+    "count": 3,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "期間限定メモリー「エッ〇な罰ゲームやってみた」復刻！": {
+    "count": 3,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "キャンペーン": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "人気ランキング1位入賞のプレゼント": {
+    "count": 4,
+    "components": [
+      "TitleText",
+      "MessageText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "新イベント「WORKING!!!!」開催！": {
+    "count": 1,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "復刻コラボイベント「STRANGERS Ⅱ」開催！": {
+    "count": 1,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "期間限定メモリー「腐れ縁で犬猿の仲？」復刻！": {
+    "count": 2,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "プレゼントBOX": {
+    "count": 1,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ワールド共有\nプレゼント": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "※保管期限は30日です。期限切れになったプレゼントは削除されます。": {
+    "count": 3,
+    "components": [
+      "CautionText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "事前登録：登録ユーザー報酬": {
+    "count": 3,
+    "components": [
+      "MessageText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "事前登録：全体ガチャ報酬": {
+    "count": 3,
+    "components": [
+      "MessageText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "事前登録：Xフォロワー報酬": {
+    "count": 3,
+    "components": [
+      "MessageText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "※保管期限は30日です。期限切れになったプレゼントは削除されます。\n※このプレゼントは1つのワールドでしか受け取る事が出来ません。": {
+    "count": 1,
+    "components": [
+      "CautionText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "人気ランキング2位入賞のプレゼント": {
+    "count": 2,
+    "components": [
+      "MessageText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "人気ランキング3位入賞のプレゼント": {
+    "count": 1,
+    "components": [
+      "MessageText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "※受取履歴は200件を超えると古い順から削除されます。": {
+    "count": 1,
+    "components": [
+      "CautionText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "受取履歴がありません": {
+    "count": 1,
+    "components": [
+      "BoxEmptyText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_pink_left> メインクエスト2章3節6-37クリアで解放 <sprite name=wing_pink_right>": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_pink_left> メインクエスト1章3節3-21クリアで解放 <sprite name=wing_pink_right>": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_pink_left> メインクエスト1章2節2-7クリアで解放 <sprite name=wing_pink_right>": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_pink_left> メインクエスト1章1節1-13クリアで解放 <sprite name=wing_pink_right>": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ブロックリスト": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "読み込み中": {
+    "count": 1,
+    "components": [
+      "Text (TMP) (1)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メッセージを入力してください…": {
+    "count": 1,
+    "components": [
+      "Placeholder"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<noparse>コクロ</noparse>": {
+    "count": 3,
+    "components": [
+      "Name"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<noparse>ヒロ</noparse>": {
+    "count": 3,
+    "components": [
+      "Name"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ユーザーを選択してください": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "フレンドがいません": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_pink_left> サークルに所属していません <sprite name=wing_pink_right>": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "サウンド設定": {
+    "count": 1,
+    "components": [
+      "Label"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "不屈のファンファーレ[Short-Size]": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "不屈のファンファーレ": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "立ち絵": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メモリー": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "アニメーション": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "スチル": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "キャラ": {
+    "count": 3,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "EXスキル": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "プレビュー/立ち絵編集": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ランダム表示": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "システム": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_blue_left> システム": {
+    "count": 1,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=sentence_blue> 画質\n<size=30><color=#6a8181>ゲーム中のグラフィックが、向上します。\nご使用の端末によって端末の発熱、処理落ちなどが発生する可能性があります。": {
+    "count": 2,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "2026-08-20 14:54:29"
+  },
+  "<sprite name=sentence_blue> スキルカット演出": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=sentence_blue> 勧誘を受け取る": {
+    "count": 1,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "システム設定を全て初期化します。": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "文字の表示速度": {
+    "count": 1,
+    "components": [
+      "Title"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "遅い": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "速い": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "文字背景の不透明度": {
+    "count": 1,
+    "components": [
+      "Title"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "薄い": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "濃い": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ボイスのダウンロード確認ダイアログを表示する": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ボイスデータのダウンロード\n<size=30><color=#6a8181>シナリオ閲覧時のボイス有無を設定します。": {
+    "count": 1,
+    "components": [
+      "Title"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ボイスあり": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ボイスなし": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "設定されたキャラクターはランキングなど特定の画面で表示されます": {
+    "count": 4,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "よろしくお願いします​": {
+    "count": 7,
+    "components": [
+      "Text"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_blue_left>マイプロフィール<sprite name=wing_blue_right>": {
+    "count": 4,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "お気に入りキャラクター": {
+    "count": 2,
+    "components": [
+      "Title"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "コメント": {
+    "count": 2,
+    "components": [
+      "Title"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=sentence_pink>メインクエスト": {
+    "count": 2,
+    "components": [
+      "Title"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=sentence_blue>メイズ通常エリア": {
+    "count": 2,
+    "components": [
+      "Title"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "エリア": {
+    "count": 2,
+    "components": [
+      "Title"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_blue_left>アカウント管理<sprite name=wing_blue_right>": {
+    "count": 2,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=sentence_blue> ユーザーID": {
+    "count": 3,
+    "components": [
+      "Title"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=sentence_blue> ユーザーRANK": {
+    "count": 3,
+    "components": [
+      "Title"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=sentence_blue> 所属ワールド": {
+    "count": 3,
+    "components": [
+      "Title"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ユーザー情報": {
+    "count": 4,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "アカウント連携": {
+    "count": 4,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "アカウント削除": {
+    "count": 3,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_blue_left>ユーザー情報": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "コピー": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_blue_left>アカウント連携": {
+    "count": 1,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "あらすじ": {
+    "count": 4,
+    "components": [
+      "Title",
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "地の底に、理の歪む世界がある。\n重力は狂乱し、生命は忌まわしき異形へと堕ちゆく。\nひとたび踏み込めば、すべてを蝕み尽くす永劫の深淵――その名は《メイズ》。\n\n記憶を奪われた指揮官と、運命に選ばれし少女たち。\n彼らはそれでもメイズへと向かう。希望という名の呪いに縛られて。\n\nだが彼らはまだ知らない。\nこの世界もまた深淵であるということを。\nこの世界そのものが、遥かなる“問い”の答えであるということを──": {
+    "count": 3,
+    "components": [
+      "BodyElementText Variant(Clone)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<sprite name=wing_pink_left> ヘルプ <sprite name=wing_pink_right>": {
+    "count": 1,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ザルトゥーム学園とは": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "MGとは": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "メイズとは": {
+    "count": 2,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "スマートデバイス": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "バトル": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "バトルの基本ルール": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "行動順番について": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "ターゲットについて": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "AP/PP/EXゲージ": {
+    "count": 6,
+    "components": [
+      "Text (TMP)",
+      "Title"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "クールタイム": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "特性について": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "属性相性について": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "バフ・デバフ・状態異常について": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【状態異常】気絶について": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【状態異常】炎上について": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【状態異常】毒について": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【状態異常】凍結について": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【デバフ】継続ダメージについて": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "リンク効果について": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【バフ】サブユニットについて": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【バフ】ステルスについて": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【状態異常】暗闇について": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【状態異常】混乱について": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "【状態異常】幻惑について": {
+    "count": 5,
+    "components": [
+      "Text (TMP)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "<color=#fa3c8c>①AP（アクティブポイント）</color>\nキャラクターのアクティブスキルを使用する際に消費するポイント。\n1ターンの間、自分の順番が回って来たときにアクティブポイントを消費してスキルを使用します。\n使用したAPは次のターンになると全回復します。\n\n<color=#fa3c8c>②PP（パッシブポイント）</color>\nキャラクターのパッシブスキルを使用する際に消費するポイント。\n発動条件を満たした際にパッシブポイントを消費してスキルを使用します。\n使用したPPは次のターンになると全回復します。\n\n<color=#fa3c8c>③EXゲージ（エクストラゲージ）</color>\nEXゲージはAPやPPを消費する事で蓄積されていきます。\nEXゲージが溜まると次の行動順が回ってきたタイミングにEXゲージを全て消費してEXスキルを使用します。\n※EXゲージ・EXスキルは初期獲得段階がSSRのキャラクターのみが保有する固有のスキルとなります。": {
+    "count": 1,
+    "components": [
+      "BodyElementText Variant(Clone)"
+    ],
+    "lastSeen": "0001-01-01 00:00:00"
+  },
+  "不具合修正完了のお知らせ": {
+    "count": 1,
+    "components": [
+      "TitleText"
+    ],
+    "lastSeen": "2026-08-20 14:54:24"
+  }
+}

@@ -1,0 +1,37 @@
+[Message: Preloader] BepInEx 6.0.0-be.785 - muv_luv_girlsgarden_cl (8/19/2026 5:31:07 PM)
+[Message: Preloader] Built from commit 6abdba47eeebe08552282e7a58ef0f4a9ab60b62
+[Info   :   BepInEx] System platform: Windows 10 64-bit
+[Info   :   BepInEx] Process bitness: 64-bit (x64)
+[Info   :   BepInEx] Running under Unity 6000.0.59f2
+[Info   :   BepInEx] Runtime version: 6.0.7
+[Info   :   BepInEx] Runtime information: .NET 6.0.7
+[Info   : Preloader] 0 patcher plugins loaded
+[Info   : Preloader] 0 assemblies discovered
+[Message:AssemblyPatcher] Executing 0 patch(es)
+[Message:   BepInEx] Chainloader initialized
+[Warning:Il2CppInterop] Class::Init signatures have been exhausted, using a substitute!
+[Info   :Il2CppInterop] Registered mono type Il2CppInterop.Runtime.DelegateSupport+Il2CppToMonoDelegateReference in il2cpp domain
+[Info   :   BepInEx] 2 plugins to load
+[Info   :   BepInEx] Loading [MuvluvUiTranslate 0.1.0]
+[Info   :MuvluvUiTranslate] Seeded dictionary template: C:\Users\Benson\Desktop\muv_luv_girlsgarden_translate\muv_luv_girlsgarden_cl\BepInEx\plugins\MuvluvUiTranslate\translation\ui\zh_Hans.json
+[Info   :Il2CppInterop] Registered mono type MuvluvUiTranslate.UiTranslateManager in il2cpp domain
+[Info   :MuvluvUiTranslate] MuvluvUiTranslate 0.1.0 loaded. Dictionary: 14 exact / 1 patterns. Directory: C:\Users\Benson\Desktop\muv_luv_girlsgarden_translate\muv_luv_girlsgarden_cl\BepInEx\plugins\MuvluvUiTranslate
+[Info   :   BepInEx] Loading [MuvluvMod 1.2.0]
+[Info   : MuvluvMod] Plugin MuvluvMod is loading
+[Warning:Il2CppInterop] Method Void DrawCard(Utility.Toast.ToastData, Single, Single, Single, Single, Single, UnityEngine.GUIStyle) on type Utility.Toast.ToastUI has unsupported parameter Utility.Toast.ToastData d of type Utility.Toast.ToastData
+[Info   :Il2CppInterop] Registered mono type Utility.Toast.ToastUI in il2cpp domain
+[Info   :Il2CppInterop] Registered mono type MuvluvMod.Hotkey in il2cpp domain
+[Info   : MuvluvMod] Missing scene reporting enabled; loading scene list
+[Info   : MuvluvMod] Harmony patches applied
+[Info   :Il2CppInterop] Registered mono type BepInEx.Unity.IL2CPP.Utils.Collections.Il2CppManagedEnumerator in il2cpp domain
+[Info   : MuvluvMod] Plugin MuvluvMod loaded successfully
+[Message:   BepInEx] Chainloader startup complete
+[Info   : MuvluvMod] Missing scene list loaded. Total: 0
+[Info   : MuvluvMod] Translation manifest loaded. Hash: 61a4bde5d345ce6f447914ef37496acc
+[Info   : MuvluvMod] Translation cache hit: names/zh_Hans.json
+[Info   : MuvluvMod] Translation cache hit: static/zh_Hans.json
+[Info   : MuvluvMod] Character names translation loaded. Total: 616
+[Info   : MuvluvMod] Team names translation loaded. Total: 41
+[Info   : MuvluvMod] MasterData translation loaded. Types: 18, Entries: 10962, Skipped identity entries: 8677, Skipped empty entries: 0
+[Info   : MuvluvMod] Fallback font registered: SarasaGothicSC-Bold SDF
+[Info   :MuvluvUiTranslate] [capture] ID:タップで表示  (IDCoverText)
