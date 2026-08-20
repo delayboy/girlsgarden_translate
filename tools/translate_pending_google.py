@@ -49,22 +49,23 @@ def mask(text: str):
     def _sub(m):
         s = m.group(0)
         restores.append(tp.GLOSSARY.get(s, s))
-        return f"⟦{len(restores) - 1}⟧"
+        return tp.GLOSSARY.get(s, s)  # f"[{len(restores) - 1}]"
 
     masked = MASK_RE.sub(_sub, text)
     return masked, restores
 
+print(mask("既にこの端末と同じプラットフォームでデータ連携を行っている場合、サポート先にデータ連携を行っていた端末の データは初期化されます"))
 
 def unmask(text: str, restores):
     """回填哨兵。任何哨兵丢失/变形/残留返回 None（该条作废）。"""
     out = text.translate(FULLWIDTH_DIGITS)
-    for i, rep in enumerate(restores):
-        pat = re.compile(f"⟦\\s*{i}\\s*⟧")
-        if not pat.search(out):
-            return None
-        out = pat.sub(lambda _m: rep, out, count=1)
-    if "⟦" in out or "⟧" in out:  # 残留哨兵（Google 合并/变形了编号）
-        return None
+    # for i, rep in enumerate(restores):
+    #     pat = re.compile(f"\[\\s*{i}\\s*\]")
+    #     if not pat.search(out):
+    #         return None
+    #     out = pat.sub(lambda _m: rep, out, count=1)
+    # if "[" in out or "]" in out:  # 残留哨兵（Google 合并/变形了编号）
+    #     return None
     return out
 
 
@@ -99,8 +100,10 @@ def translate_entry(tr, key: str):
     if translated is None:
         return None, "请求失败"
     restored = unmask(translated, restores)
+    if masked.__contains__("既にこの端末と同じプラット"):
+        pass
     if restored is None:
-        return None, "哨兵丢失"
+        return None, "哨兵丢失" + masked + "---->" + translated
     final = lead + restored + trail
     if not final.strip() or final == key:
         return None, "空译/未变化"
@@ -163,7 +166,7 @@ def main():
                 print(f"[{idx}/{len(todo)}] ✗ {reason}: {preview}")
             else:
                 results[key] = final
-                print(f"[{idx}/{len(todo)}] ✓ {preview} → {final.replace(chr(10), chr(92)+chr(110))[:32]}")
+                print(f"[{idx}/{len(todo)}] ✓ {preview} → {final.replace(chr(10), chr(92) + chr(110))[:32]}")
             time.sleep(args.sleep)
     except KeyboardInterrupt:
         print("\n检测到 Ctrl-C，保存已完成部分…")

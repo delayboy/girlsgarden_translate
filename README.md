@@ -66,13 +66,15 @@
 玩游戏(捕获) → clean_capture.py 清洗 → 机翻脚本入库 → 游戏 F10 热重载 → 人工校对
 ```
 
-`tools/` 下三个脚本，**注意 python 环境区分**：
+`tools/` 下脚本，**注意 python 环境区分**：
 
 | 脚本 | 环境 | 作用 |
 |---|---|---|
 | `clean_capture.py` | **python-ba** | 剔除 TextViewText 噪声与无假名串 |
 | `translate_pending_google.py` | 默认 python | **Google 免费翻译**全量入库（哨兵占位保标签/换行/术语） |
 | `translate_pending.py` | 默认 python | DeepSeek 精翻（挂术语表，适合精修） |
+| `static_scan_bundles.py` | **python-ba** | UnityPy 静态扫 295 bundle 日文候选（含纯汉字盲区） |
+| `translate_static.py` | 默认 python | 静态候选 Google 粗翻入库（每 100 条落盘可续跑） |
 
 ### Google 版（批量草稿，免费无 key）
 
@@ -91,6 +93,21 @@ python tools/translate_pending.py               # 需 DeepSeek API key
 ```
 
 依赖 `PyTools` 包（DeepSeekChat 封装）在工作目录根。
+
+### 静态扫描（里程碑 2：补运行时捕获盲区）
+
+运行时捕获只能抓"已访问界面且含假名"的日文；纯汉字日文（設定/価格）与未访问界面靠静态补：
+
+```bash
+# 1. 扫 bundle（分析副本，产出 static_scan/static_candidates.json）
+python-ba tools/static_scan_bundles.py
+
+# 2. 静态候选粗翻入库（不要求假名；每 100 条落盘，Ctrl-C 可续跑）
+python tools/translate_static.py --dry-run
+python tools/translate_static.py
+```
+
+原理：UnityPy（FALLBACK_UNITY_VERSION=6000.0.59f2）遍历 295 bundle 的 MonoBehaviour 原始字节，按"含假名或 ≥2 汉字"的信号切日文串（二进制噪声率 ~2.5%）；剧情文本不烘焙进 bundle，扫到的以 UI prefab 文案为主。另用 Il2CppDumper 的 `stringliteral.json`（29,616 条 C# 字面量）同规则并入。
 
 ## 构建 / 打包 / 发版
 
@@ -126,8 +143,8 @@ dump.cs                   Il2CppDumper 导出的全量类信息（Hook 点验证
 ## 路线图
 
 - [x] 里程碑 1：插件 + 词典 v1 + 捕获→机翻管线，游戏内实测生效
-- [ ] 里程碑 2：静态扫描补齐运行时捕获盲区（Il2CppDumper 字符串字面量 + UnityPy 扫 295 个 bundle 的 m_text，覆盖纯汉字日文与未访问界面）
-- [ ] 术语库自动扩充（从上游翻译仓库提取译名）
+- [x] 里程碑 2：静态扫描补齐运行时捕获盲区（bundle 扫描 1,074 条 + 字符串字面量 1,408 条 → Google 粗翻入库）
+- [ ] 术语库自动扩充（从上游翻译仓库提取译名；上游 names/zh_Hans.json 现为 404，暂缓）
 - [x] Google 草稿批量 LLM 精修（`zh_Hans.google_log.json` 清单驱动）：Google应对UI翻译足够，暂缓执行
 
 ## 致谢
