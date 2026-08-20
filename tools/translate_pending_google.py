@@ -23,7 +23,7 @@ import time
 from pathlib import Path
 
 # sys.path.insert(0, str(Path(__file__).resolve().parent))  # 复用同目录 DeepSeek 版
-import translate_pending as tp  # 其模块级已把 stdout/stderr 包成 utf-8
+import translate_pending as tp  # 复用其过滤器/术语表/落盘（同目录自动进 sys.path）
 
 from deep_translator import GoogleTranslator
 
