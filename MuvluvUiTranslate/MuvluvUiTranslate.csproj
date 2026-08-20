@@ -9,7 +9,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>MuvluvUiTranslate</AssemblyName>
     <Product>MuvluvUiTranslate</Product>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <LangVersion>latest</LangVersion>
     <RootNamespace>MuvluvUiTranslate</RootNamespace>
     <OutputPath>$(GameDir)\BepInEx\plugins\$(Product)\</OutputPath>

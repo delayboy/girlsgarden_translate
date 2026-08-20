@@ -119,34 +119,80 @@ public static class UiDictionary
     /// <summary>该串是否已是本词典的译文（防止自身译文被重复捕获/翻译）。</summary>
     public static bool IsKnownTranslation(string text) => _snapshot.Values.Contains(text);
 
+    /// <summary>
+    /// 双层级翻译：① 整串 patterns——跨标签/数字模板逃生舱（re 原样匹配、可含标签）；
+    /// ② 逐 CORE（RichText 拆分）：exact → patterns，部分命中即部分替换（混排），
+    /// 未命中 core 保持原文，由 TextFlow 走捕获通道。exact key 均为纯文本 core。
+    /// </summary>
     public static bool TryTranslate(string text, out string translated)
     {
         var snapshot = _snapshot;
 
-        if (snapshot.Exact.TryGetValue(text, out var exact))
-        {
-            translated = exact;
-            return true;
-        }
-
+        // ① 整串模板（短文案，避免长文本跑正则）
         if (text.Length <= MaxPatternLength && snapshot.Patterns.Length > 0)
         {
             foreach (var (regex, template) in snapshot.Patterns)
             {
                 var match = regex.Match(text);
-                if (!match.Success)
-                    continue;
-
-                var args = new string[match.Groups.Count - 1];
-                for (var i = 1; i < match.Groups.Count; i++)
-                    args[i - 1] = match.Groups[i].Value;
-                translated = string.Format(template, args);
-                return true;
+                if (match.Success)
+                {
+                    translated = FormatTemplate(template, match);
+                    return true;
+                }
             }
         }
 
-        translated = null;
-        return false;
+        // ② 逐 core：标签/分隔符原样贴回，core 查词典
+        var hit = false;
+        var sb = new System.Text.StringBuilder(text.Length + 16);
+        foreach (var token in RichText.Tokenize(text))
+        {
+            if (token.Kind != RichText.TokenKind.Core || !NeedsLookup(token.Text))
+            {
+                sb.Append(token.Text);
+                continue;
+            }
+
+            if (snapshot.Exact.TryGetValue(token.Text, out var exact))
+            {
+                sb.Append(exact.Trim()); // Trim 防御旧数据带首尾空白
+                hit = true;
+                continue;
+            }
+
+            var matched = false;
+            if (token.Text.Length <= MaxPatternLength)
+            {
+                foreach (var (regex, template) in snapshot.Patterns)
+                {
+                    var match = regex.Match(token.Text);
+                    if (match.Success)
+                    {
+                        sb.Append(FormatTemplate(template, match));
+                        hit = matched = true;
+                        break;
+                    }
+                }
+            }
+            if (!matched)
+                sb.Append(token.Text);
+        }
+
+        if (!hit)
+        {
+            translated = null;
+            return false;
+        }
+        translated = sb.ToString();
+        return true;
+    }
+
+    private static string FormatTemplate(string template, System.Text.RegularExpressions.Match match)
+    {
+        var args = new string[match.Groups.Count - 1];
+        for (var i = 1; i < match.Groups.Count; i++)
+            args[i - 1] = match.Groups[i].Value;
+        return string.Format(template, args);
     }
 
     private static void Load()

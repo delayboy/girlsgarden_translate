@@ -29,21 +29,35 @@
 - 只捕获**含假名**的未命中日文（平/片假名判据，排除 `・` U+30FB——它会出现在中文译名里）；
 - 纯汉字日文（如「設定」）运行时照翻、但不捕获（无法与上游已译中文区分），由里程碑 2 的静态扫描补齐；
 - 跳过 `TextViewText` 打字机组件（逐字刷新的剧情通道，归上游）；
+- **pending 只记纯 core**（`RichText` 三级拆分后的文本核心，无标签无空白），`A\nB` 拆两条、装饰标签不重复捕获；
 - 去重计数、跨运行累计、原子落盘到 `translation/capture/zh_Hans.pending.json`。
+
+### 三级拆分（`RichText.cs`，参考实现+单测 `tools/split_example.py`）
+
+运行时先把整串拆成三类 token，**只有 core 进词典**（key 复用性最大化）：
+
+| token | 内容 | 处理 |
+|---|---|---|
+| TAG | `<sprite>`/`<color>` 等 TMP 标签 | 原样保留 |
+| SEP | 空白（含换行）+ 全角标点 `！？。…‥、：；「」『』【】（）` | 原样贴回，布局零损失 |
+| CORE | 其余文本段 | **唯一翻译单元**，词典 key 即纯 core |
+
+刻意不拆：`・`（中文译名用）、`ー`（片假名长音）、ASCII 标点/数字（`1.5倍` 不断）。
 
 ### 词典（`translation/ui/zh_Hans.json`）
 
 ```jsonc
 {
-  "exact": { "クリックしてスタート": "点击开始" },          // 整串精确匹配
+  "exact": { "クリックしてスタート": "点击开始" },          // 纯 core 精确匹配（无标签无空白无边缘标点）
   "patterns": [
     { "re": "^あと(\\d+)日(\\d+)時間$", "tpl": "剩{0}天{1}小时" } // 正则模板，数字归并
   ]
 }
 ```
 
-- key/模板必须与游戏内文本**逐字符一致**（含 TMP 富文本标签 `<sprite>`/`<color>`、换行、首尾空格）；
-- exact 优先于 patterns；
+- 匹配双层级：① 整串 patterns（**跨标签/数字模板逃生舱**，re 可含标签）→ ② 逐 core：exact → patterns；
+- 部分 core 命中即部分替换（日中混排），未命中 core 走捕获通道；
+- `<sprite> テキスト` 与裸 `テキスト` 复用同一个 core key，标签/空白/标点由运行时贴回；
 - **游戏内按 F10 热重载**，改完词典不用重启。
 
 ## 安装
@@ -71,6 +85,8 @@
 | 脚本 | 环境 | 作用 |
 |---|---|---|
 | `clean_capture.py` | **python-ba** | 剔除 TextViewText 噪声与无假名串 |
+| `split_example.py` | 默认 python | 三级拆分参考实现+单测（与 C# RichText 逐字对齐） |
+| `zh_Hans_clean.py` | 默认 python | 旧词典整串条目 → 纯 core 清洗（不对齐条目百度重翻，patterns 不动） |
 | `translate_pending_google.py` | 默认 python | **Google 免费翻译**全量入库（哨兵占位保标签/换行/术语） |
 | `translate_pending.py` | 默认 python | DeepSeek 精翻（挂术语表，适合精修） |
 | `static_scan_bundles.py` | **python-ba** | UnityPy 静态扫 295 bundle 日文候选（含纯汉字盲区） |
@@ -125,10 +141,11 @@ python publish_release.py
 ## 目录结构
 
 ```
-MuvluvUiTranslate/        插件源码（csproj + 7 个 .cs）+ 自带 BepInEx 编译环境
+MuvluvUiTranslate/        插件源码（csproj + 8 个 .cs）+ 自带 BepInEx 编译环境
   Plugin.cs               入口：配置/词典/捕获初始化，Harmony PatchAll
   TmpTextPatches.cs       三类 TMP Hook
-  UiDictionary.cs         词典加载/匹配（不可变快照热替换）
+  RichText.cs             三级 token 拆分（与 tools/split_example.py 对齐）
+  UiDictionary.cs         词典加载/双层级匹配（不可变快照热替换）
   CaptureRecorder.cs      捕获去重计数、原子落盘
   UiTranslateManager.cs   F10 热重载、定时 flush
   Config.cs               BepInEx 配置项
@@ -137,7 +154,6 @@ build_example/            构建产物示例（dll + translation）
 Il2CppDumper-win-v6.7.46/ 逆向工具（里程碑 2 静态扫描用）
 dump.cs                   Il2CppDumper 导出的全量类信息（Hook 点验证依据）
 少女庭园UI翻译计划书.md     项目计划书
-进展总结.md                进展记录
 ```
 
 ## 路线图

@@ -23,8 +23,7 @@ internal static class TextFlow
                 return;
             }
 
-            if (UiDictionary.ShouldCapture(text) && !UiDictionary.IsKnownTranslation(text))
-                CaptureRecorder.Record(text, SafeName(instance));
+            CaptureMissedCores(text, SafeName(instance));
         }
         catch { }
     }
@@ -45,15 +44,25 @@ internal static class TextFlow
             {
                 instance.text = translated; // 经过 set_text 钩子，中文不会再次命中
             }
-            else if (
-                UiDictionary.ShouldCapture(current)
-                && !UiDictionary.IsKnownTranslation(current)
-            )
+            else
             {
-                CaptureRecorder.Record(current, SafeName(instance));
+                CaptureMissedCores(current, SafeName(instance));
             }
         }
         catch { }
+    }
+
+    /// <summary>
+    /// pending 只记纯 core（RichText 拆分后的无标签无空白文本段），
+    /// 逐 core 判定捕获条件（含假名、非自身译文）。
+    /// </summary>
+    private static void CaptureMissedCores(string text, string name)
+    {
+        foreach (var core in RichText.ExtractCores(text))
+        {
+            if (UiDictionary.ShouldCapture(core) && !UiDictionary.IsKnownTranslation(core))
+                CaptureRecorder.Record(core, name);
+        }
     }
 
     private static string SafeName(TMP_Text instance)
