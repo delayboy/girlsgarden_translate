@@ -14,5 +14,5 @@ PROJECT_ROOT = os.path.abspath(".")
 if __name__ == '__main__':
     today = datetime.now().strftime("%Y-%m-%d")
     zip_folder = os.path.join(PROJECT_ROOT, "MuvluvUiTranslate/")
-    white_list = {"BepInEx/plugins/MuvluvUiTranslate"}
+    white_list = {"BepInEx/plugins/MuvluvUiTranslate","BepInEx/config/benson.muvluvuitranslate.cfg"}
     compress_folder_with_progress(zip_folder, f"{today}-girlsgarden-MuvluvMod-ui-translate-plugin.zip", white_list=white_list)
