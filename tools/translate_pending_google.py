@@ -54,7 +54,9 @@ def mask(text: str):
     masked = MASK_RE.sub(_sub, text)
     return masked, restores
 
+
 print(mask("既にこの端末と同じプラットフォームでデータ連携を行っている場合、サポート先にデータ連携を行っていた端末の データは初期化されます"))
+
 
 def unmask(text: str, restores):
     """回填哨兵。任何哨兵丢失/变形/残留返回 None（该条作废）。"""
@@ -71,10 +73,71 @@ def unmask(text: str, restores):
 
 def split_ws(text: str):
     """deep_translator 会 strip 首尾 → 先拆出首尾空白，回填时还原。"""
+    if text.__contains__("<") and text.__contains__(">"):
+        return inner_split_ws(text)
     m = re.match(r"^(\s*)(.*?)(\s*)$", text, re.S)
     return m.group(1), m.group(2), m.group(3)
 
+def inner_split_ws(text: str):
+    """
+    按 <> 标签分割字符串，提取第一个和最后一个标签。
+    返回 (lead, core, trail)，其中：
+        - lead: 第一个标签（如 '<sprite name=...>'）或空
+        - core: 需要翻译的纯文本部分，去除首尾空白
+        - trail: 最后一个标签，前面附加上 core 尾部被去除的空白（如有）
+    示例：
+        >>> split_ws('<sprite name=wing_blue_left> ガチャ説明 <sprite name=wing_blue_right>')
+        ('<sprite name=wing_blue_left>', 'ガチャ説明', ' <sprite name=wing_blue_right>')
+    """
+    tags = re.findall(r'<[^>]*>', text)
 
+    if not tags:
+        return '', text.strip(), ''
+
+    # ----- 处理只有一个标签的情况 -----
+    if len(tags) == 1:
+        tag = tags[0]
+        start = text.find(tag)
+        end = start + len(tag)
+        before = text[:start]
+        after = text[end:]
+
+        # 标签在开头（忽略前导空白）
+        if not before.strip():
+            lead = tag
+            core = after.strip()
+            trail = ''
+            return lead, core, trail
+
+        # 标签在末尾（忽略尾随空白）
+        if not after.strip():
+            core = before.strip()
+            # 提取 before 尾部被 strip 掉的空白
+            trailing_space = before[len(before.rstrip()):]
+            trail = trailing_space + tag
+            return '', core, trail
+
+        # 标签在中间：将整个文本视为普通内容，不做特殊拆分
+        return '', text.strip(), ''
+
+    # ----- 处理两个及以上标签 -----
+    first_tag = tags[0]
+    last_tag = tags[-1]
+
+    # 获取中间部分（从第一个标签结束到最后一个标签开始）
+    start = text.find(first_tag) + len(first_tag)
+    end = text.rfind(last_tag)
+    middle = text[start:end]
+
+    core = middle.strip()
+    trailing_space = middle[len(middle.rstrip()):]
+    trail = trailing_space + last_tag
+
+    return first_tag, core, trail
+
+print(split_ws("<sprite name=wing_blue_left> ガチャ説明 <sprite name=wing_blue_right>"))
+print(split_ws("ガチャ詳細"))
+print(split_ws("所属するサークルを解散しますか？\n<color=#ff1c0b>"))
 def google_translate(tr, masked: str, attempts: int = 3):
     """带退避重试的单条翻译。成功返回译文；请求连败/Google 原样返回 → None。"""
     for a in range(1, attempts + 1):
