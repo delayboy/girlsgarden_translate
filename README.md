@@ -18,7 +18,7 @@
 
 ![image-20260821082829464](README/1658b48135e6aa05af5a9d4959933ff9.png)
 
-- 游戏时候百度翻译接口会拒绝翻译敏感字，比如【[Warning:MuvluvUiTranslate] [auto] 翻译失败，: 桃园梅露のシナリオ解放！ (百度翻译接口报错: code=20003, msg=Hit sensitive word) 】，此时核心词元会面临翻译失败的问题，如果想获得更好的游戏体验可以到 `BepInEx\plugins\MuvluvUiTranslate\translation\ui\zh_Hans.json` 插件目录下找到文本翻译缓存文件 `zh_Hans.json`手动翻译目标词元即可。![image-20260821083426157](README/dbaec830e6ea61d4f458d375981e7d14.png)
+- 有些时候，百度翻译接口会拒绝翻译敏感字，比如【[Warning:MuvluvUiTranslate] [auto] 翻译失败，: 桃园梅露のシナリオ解放！ (百度翻译接口报错: code=20003, msg=Hit sensitive word) 】，此时核心词元会面临翻译失败的问题，如果想获得更好的游戏体验可以到 `BepInEx\plugins\MuvluvUiTranslate\translation\ui\zh_Hans.json` 插件目录下找到文本翻译缓存文件 `zh_Hans.json`手动翻译目标词元即可。![image-20260821083426157](README/dbaec830e6ea61d4f458d375981e7d14.png)
 
   
 

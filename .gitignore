@@ -9,3 +9,5 @@ MuvluvMod.7z
 /test
 *.zip
 MuvluvUiTranslate/BepInEx/plugins/MuvluvUiTranslate/MuvluvUiTranslate.dll
+/v0.1.4-full-plugin-with-MuvluvMod
+*.7z
