@@ -7,3 +7,5 @@ MuvluvMod.7z
 *.pyc
 /static_scan
 /test
+*.zip
+MuvluvUiTranslate/BepInEx/plugins/MuvluvUiTranslate/MuvluvUiTranslate.dll

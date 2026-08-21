@@ -11,7 +11,7 @@ public class Plugin : BasePlugin
 {
     public const string PluginGuid = "benson.muvluvuitranslate";
     public const string PluginName = "MuvluvUiTranslate";
-    public const string PluginVersion = "0.1.3";
+    public const string PluginVersion = "0.1.4";
 
     public static new ManualLogSource Log;
     public static string PluginDirectory;

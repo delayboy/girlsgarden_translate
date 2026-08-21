@@ -6,10 +6,20 @@ using System.Text.Json;
 
 namespace MuvluvUiTranslate;
 
+/// <summary>百度翻译 API 业务错误（响应含 error_code）。Code 为官方错误码表字符串。</summary>
+public sealed class BaiduApiException : Exception
+{
+    public BaiduApiException(string code, string message)
+        : base(message) => Code = code;
+
+    public string Code { get; }
+}
+
 /// <summary>
 /// 百度翻译 API 客户端（移植自 tools/SingleBaiduTranslator.cs 演示代码，已调通）。
 /// 纯标准库：HttpClient + MD5 签名 + System.Text.Json。jp → zh 固定。
-/// 仅供 AutoTranslator 后台线程同步调用，任何失败直接抛异常，由调用方留队重试。
+/// 仅供 AutoTranslator 后台线程同步调用；API 业务错误抛 BaiduApiException（带错误码），
+/// 网络异常抛其他 Exception，均由调用方按错误码分类处理。
 /// </summary>
 public sealed class BaiduTranslator
 {
@@ -48,8 +58,9 @@ public sealed class BaiduTranslator
         var root = doc.RootElement;
         if (root.TryGetProperty("error_code", out var errorCode))
         {
+            var code = errorCode.GetString() ?? "";
             var errorMsg = root.TryGetProperty("error_msg", out var msg) ? msg.GetString() ?? "" : "";
-            throw new Exception($"百度翻译接口报错: code={errorCode}, msg={errorMsg}");
+            throw new BaiduApiException(code, $"百度翻译接口报错: code={code}, msg={errorMsg}");
         }
 
         var sb = new StringBuilder();
