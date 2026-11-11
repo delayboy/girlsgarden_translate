@@ -88,7 +88,8 @@
 - 匹配双层级：① 整串 patterns（**跨标签/数字模板逃生舱**，re 可含标签）→ ② 逐 core：exact → patterns；
 - 部分 core 命中即部分替换（日中混排），未命中 core 走捕获通道；
 - `<sprite> テキスト` 与裸 `テキスト` 复用同一个 core key，标签/空白/标点由运行时贴回；
-- **游戏内按 F10 热重载**，改完词典不用重启。
+- **游戏内按 F10 热重载**，改完词典不用重启；
+- **游戏内按 F6 切换 UI 翻译开/关**（可在 cfg 改 `Translation.ToggleHotkey`），顶部 toast 提示，状态持久化。隐藏「汉」浮球请用 ZhMenu 的 **F7** / 右键 / `lcs.zhmenu.cfg` 的 `ShowBadge`。
 
 ## 安装
 
@@ -100,7 +101,8 @@
 
 | 配置项 | 默认 | 说明 |
 |---|---|---|
-| `Translation.Enabled` | true | 启用 UI 翻译 |
+| `Translation.Enabled` | true | 启用 UI 翻译（游戏内可用热键切换，默认 **F6**） |
+| `Translation.ToggleHotkey` | F6 | 切换 UI 翻译开/关；状态写回 cfg。与「汉」浮球（ZhMenu / F7）无关 |
 | `Capture.Enabled` | true | 捕获未翻译日文到 pending.json |
 | `Capture.LogLimit` | 30 | 每次运行写入 BepInEx 日志的未翻译条数上限（0 关闭） |
 | `AutoTranslate.Enabled` | true | 后台自动百度翻译未命中 core，实时入库生效 |
@@ -203,7 +205,7 @@ MuvluvUiTranslate/        插件源码（csproj + 10 个 .cs）+ 自带 BepInEx 
   CaptureRecorder.cs      捕获去重计数、原子落盘、pending 快照/消费接口
   AutoTranslator.cs       后台自动翻译 worker（1s 轮询 pending → 百度 → 逐条入库）
   BaiduTranslator.cs      百度翻译 API 客户端（移植自 tools/SingleBaiduTranslator.cs）
-  UiTranslateManager.cs   F10 热重载、定时 flush
+  UiTranslateManager.cs   F6 切换 UI 翻译、F10 热重载、定时 flush
   Config.cs               BepInEx 配置项
 tools/                    翻译管线脚本（见上）
 build_example/            构建产物示例（dll + translation）

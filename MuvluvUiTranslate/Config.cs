@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using UnityEngine;
 
 namespace MuvluvUiTranslate;
 
@@ -7,6 +8,7 @@ public static class Config
     private static ConfigFile _config;
 
     public static ConfigEntry<bool> TranslationEnabled { get; private set; }
+    public static ConfigEntry<KeyCode> TranslationToggleHotkey { get; private set; }
     public static ConfigEntry<bool> CaptureEnabled { get; private set; }
     public static ConfigEntry<int> CaptureLogLimit { get; private set; }
     public static ConfigEntry<bool> AutoTranslateEnabled { get; private set; }
@@ -22,6 +24,13 @@ public static class Config
             "Enabled",
             true,
             "启用 UI 文本翻译（词典命中即替换）"
+        );
+
+        TranslationToggleHotkey = config.Bind(
+            "Translation",
+            "ToggleHotkey",
+            KeyCode.F6,
+            "游戏内切换 UI 翻译开/关的热键（默认 F6；与「汉」浮球 F7 无关）"
         );
 
         CaptureEnabled = config.Bind(
