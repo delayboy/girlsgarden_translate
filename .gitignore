@@ -11,3 +11,7 @@ MuvluvMod.7z
 MuvluvUiTranslate/BepInEx/plugins/MuvluvUiTranslate/MuvluvUiTranslate.dll
 /v0.1.4-full-plugin-with-MuvluvMod
 *.7z
+
+_build_f6/
+_zhfull_decomp/
+

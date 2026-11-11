@@ -89,7 +89,7 @@
 - 部分 core 命中即部分替换（日中混排），未命中 core 走捕获通道；
 - `<sprite> テキスト` 与裸 `テキスト` 复用同一个 core key，标签/空白/标点由运行时贴回；
 - **游戏内按 F10 热重载**，改完词典不用重启；
-- **游戏内按 F6 切换 UI 翻译开/关**（可在 cfg 改 `Translation.ToggleHotkey`），顶部 toast 提示，状态持久化。隐藏「汉」浮球请用 ZhMenu 的 **F7** / 右键 / `lcs.zhmenu.cfg` 的 `ShowBadge`。
+- **游戏内按 F6 切换 UI 翻译开/关**（可在 cfg 改 `Translation.ToggleHotkey`），顶部 toast 提示，状态持久化；关闭时会同步 `ZhFull.General.Enable`（汉化包里另一套 TMP Hook），并对当前 TMP 做 exact 反向刷新。隐藏「汉」浮球请用 ZhMenu 的 **F7** / 右键 / `lcs.zhmenu.cfg` 的 `ShowBadge`。
 
 ## 安装
 
@@ -101,8 +101,8 @@
 
 | 配置项 | 默认 | 说明 |
 |---|---|---|
-| `Translation.Enabled` | true | 启用 UI 翻译（游戏内可用热键切换，默认 **F6**） |
-| `Translation.ToggleHotkey` | F6 | 切换 UI 翻译开/关；状态写回 cfg。与「汉」浮球（ZhMenu / F7）无关 |
+| `Translation.Enabled` | true | 启用 UI 翻译（游戏内可用热键切换，默认 **F6**）；会同步 ZhFull |
+| `Translation.ToggleHotkey` | F6 | 切换 UI 翻译开/关；关时反向刷新已上屏 exact 译文。与「汉」浮球（ZhMenu / F7）无关 |
 | `Capture.Enabled` | true | 捕获未翻译日文到 pending.json |
 | `Capture.LogLimit` | 30 | 每次运行写入 BepInEx 日志的未翻译条数上限（0 关闭） |
 | `AutoTranslate.Enabled` | true | 后台自动百度翻译未命中 core，实时入库生效 |

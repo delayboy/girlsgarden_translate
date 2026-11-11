@@ -67,9 +67,15 @@ public sealed class UiTranslateManager : MonoBehaviour
         bool next = !Config.TranslationEnabled.Value;
         Config.TranslationEnabled.Value = next;
         // ConfigEntry 赋值会触发 BepInEx 写回 cfg，重启后保持。
+        // ZhFull 同样 Hook TMP；不同步关掉会出现「本开关已关仍是中文」。
+        PeerUiPlugins.SyncEnabled(next);
+
+        int refreshed = UiTextRefresh.ApplyAll(translate: next);
         string state = next ? "开" : "关";
-        Plugin.Log.LogInfo($"[ui] Translation.Enabled = {next} (hotkey {Config.TranslationToggleHotkey.Value})");
-        ShowToast($"UI 翻译 → {state}");
+        Plugin.Log.LogInfo(
+            $"[ui] Translation.Enabled = {next} (hotkey {Config.TranslationToggleHotkey.Value}, refreshed={refreshed})"
+        );
+        ShowToast($"UI 翻译 → {state}（刷新 {refreshed}）");
     }
 
     private void ShowToast(string message)
