@@ -16,9 +16,21 @@ public sealed class UiTranslateManager : MonoBehaviour
     private float _toastUntil;
     private GUIStyle _toastStyle;
     private Font _toastFont;
+    private float _peerSyncRetryAt;
+    private int _peerSyncTries;
+    private bool _peerSynced;
 
     private void Update()
     {
+        // LocaleForce 可能晚于本插件创建组件；启动后短暂重试对齐 ZhFull/Locale/LocaleForce。
+        if (!_peerSynced && _peerSyncTries < 40 && Time.unscaledTime >= _peerSyncRetryAt)
+        {
+            _peerSyncRetryAt = Time.unscaledTime + 0.5f;
+            _peerSyncTries++;
+            if (PeerUiPlugins.SyncEnabled(Config.TranslationEnabled.Value))
+                _peerSynced = true;
+        }
+
         try
         {
             var keyboard = Keyboard.current;
@@ -67,8 +79,8 @@ public sealed class UiTranslateManager : MonoBehaviour
         bool next = !Config.TranslationEnabled.Value;
         Config.TranslationEnabled.Value = next;
         // ConfigEntry 赋值会触发 BepInEx 写回 cfg，重启后保持。
-        // ZhFull 同样 Hook TMP；不同步关掉会出现「本开关已关仍是中文」。
-        PeerUiPlugins.SyncEnabled(next);
+        // 必须同步 ZhFull 的 Enable + Sweep，否则 Sweep 会把界面扫回中文。
+        _peerSynced = PeerUiPlugins.SyncEnabled(next);
 
         int refreshed = UiTextRefresh.ApplyAll(translate: next);
         string state = next ? "开" : "关";

@@ -37,11 +37,7 @@ internal static class UiTextRefresh
                         changed++;
                     }
                 }
-                else if (
-                    UiDictionary.TryUntranslate(current, out string jp)
-                    && !string.IsNullOrEmpty(jp)
-                    && jp != current
-                )
+                else if (TryUntranslateAny(current, out string jp) && jp != current)
                 {
                     tmp.text = jp;
                     changed++;
@@ -103,5 +99,17 @@ internal static class UiTextRefresh
         }
 
         return list;
+    }
+
+    private static bool TryUntranslateAny(string chinese, out string japanese)
+    {
+        if (
+            UiDictionary.TryUntranslate(chinese, out japanese)
+            && !string.IsNullOrEmpty(japanese)
+        )
+            return true;
+
+        return PeerUiPlugins.TryUntranslate(chinese, out japanese)
+            && !string.IsNullOrEmpty(japanese);
     }
 }
