@@ -27,11 +27,35 @@ public static class UiDictionary
             Exact = exact;
             Patterns = patterns;
             Values = new HashSet<string>(exact.Values);
+            Reverse = BuildReverse(exact);
         }
 
         public Dictionary<string, string> Exact { get; }
         public (System.Text.RegularExpressions.Regex Regex, string Template)[] Patterns { get; }
         public HashSet<string> Values { get; }
+        /// <summary>无歧义的中文→日文回翻表（同一中文对应多个日文时丢弃）。</summary>
+        public Dictionary<string, string> Reverse { get; }
+
+        private static Dictionary<string, string> BuildReverse(Dictionary<string, string> exact)
+        {
+            var reverse = new Dictionary<string, string>(StringComparer.Ordinal);
+            var ambiguous = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var (jp, cn) in exact)
+            {
+                if (string.IsNullOrEmpty(cn) || cn == jp)
+                    continue;
+                if (ambiguous.Contains(cn))
+                    continue;
+                if (reverse.TryGetValue(cn, out var existing) && existing != jp)
+                {
+                    reverse.Remove(cn);
+                    ambiguous.Add(cn);
+                    continue;
+                }
+                reverse[cn] = jp;
+            }
+            return reverse;
+        }
     }
 
     /// <summary>超过该长度的串不再尝试 patterns（UI 模板只针对短文案，避免长文本跑正则）。</summary>
@@ -227,6 +251,55 @@ public static class UiDictionary
             writer.WriteEndObject();
         }
         File.Move(temp, _dictionaryPath, overwrite: true);
+    }
+
+    /// <summary>
+    /// 关闭 UI 翻译时回翻：按无歧义 exact 反向表把中文 core 还原为日文。
+    /// patterns 不做回翻（模板不可逆）；未命中则保持原文。
+    /// </summary>
+    public static bool TryUntranslate(string text, out string original)
+    {
+        var snapshot = _snapshot;
+        if (snapshot.Reverse.Count == 0 || string.IsNullOrEmpty(text))
+        {
+            original = null;
+            return false;
+        }
+
+        if (snapshot.Reverse.TryGetValue(text, out var whole))
+        {
+            original = whole;
+            return true;
+        }
+
+        var hit = false;
+        var sb = new System.Text.StringBuilder(text.Length + 16);
+        foreach (var token in RichText.Tokenize(text))
+        {
+            if (token.Kind != RichText.TokenKind.Core || !NeedsLookup(token.Text))
+            {
+                sb.Append(token.Text);
+                continue;
+            }
+
+            if (snapshot.Reverse.TryGetValue(token.Text, out var jp))
+            {
+                sb.Append(jp);
+                hit = true;
+            }
+            else
+            {
+                sb.Append(token.Text);
+            }
+        }
+
+        if (!hit)
+        {
+            original = null;
+            return false;
+        }
+        original = sb.ToString();
+        return true;
     }
 
     /// <summary>

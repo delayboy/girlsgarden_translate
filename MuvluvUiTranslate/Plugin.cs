@@ -7,11 +7,12 @@ using HarmonyLib;
 namespace MuvluvUiTranslate;
 
 [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+[BepInDependency("lcs.zhfull", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BasePlugin
 {
     public const string PluginGuid = "benson.muvluvuitranslate";
     public const string PluginName = "MuvluvUiTranslate";
-    public const string PluginVersion = "0.1.4";
+    public const string PluginVersion = "0.1.10";
 
     public static new ManualLogSource Log;
     public static string PluginDirectory;
@@ -38,9 +39,13 @@ public class Plugin : BasePlugin
         // pending 里未入库的历史欠账由 worker 首轮自动补翻
         AutoTranslator.Start();
 
+        // 启动时与 ZhFull 对齐，避免 cfg 关了本插件但 ZhFull 仍在翻 UI
+        PeerUiPlugins.SyncEnabled(MuvluvUiTranslate.Config.TranslationEnabled.Value);
+
         Log.LogInfo(
             $"{PluginName} {PluginVersion} loaded. "
                 + $"Dictionary: {UiDictionary.ExactCount} exact / {UiDictionary.PatternCount} patterns. "
+                + $"Translation: {(MuvluvUiTranslate.Config.TranslationEnabled.Value ? "on" : "off")}. "
                 + $"AutoTranslate: {(AutoTranslator.IsRunning ? "on" : "off")}. "
                 + $"Directory: {PluginDirectory}"
         );
