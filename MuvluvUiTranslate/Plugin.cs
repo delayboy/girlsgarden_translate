@@ -8,12 +8,11 @@ namespace MuvluvUiTranslate;
 
 [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
 [BepInDependency("lcs.zhfull", BepInDependency.DependencyFlags.SoftDependency)]
-[BepInDependency("lcs.localeforce", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BasePlugin
 {
     public const string PluginGuid = "benson.muvluvuitranslate";
     public const string PluginName = "MuvluvUiTranslate";
-    public const string PluginVersion = "0.1.8";
+    public const string PluginVersion = "0.1.9";
 
     public static new ManualLogSource Log;
     public static string PluginDirectory;

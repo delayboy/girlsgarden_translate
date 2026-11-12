@@ -5,12 +5,12 @@ using UnityEngine.InputSystem;
 namespace MuvluvUiTranslate;
 
 /// <summary>
-/// 帧循环组件：F10 热重载词典、F6 切换 UI 翻译、持续门闩同伴插件、定时落盘。
+/// 帧循环：F10 热重载、F6 切换 UI 翻译、持续门闩 ZhFull、定时落盘。
 /// </summary>
 public sealed class UiTranslateManager : MonoBehaviour
 {
     private const float FlushIntervalSeconds = 10f;
-    private const float HoldIntervalSeconds = 0.5f;
+    private const float HoldIntervalSeconds = 1f;
     private const float ToastSeconds = 2.2f;
 
     private float _flushTimer;
@@ -26,15 +26,12 @@ public sealed class UiTranslateManager : MonoBehaviour
     {
         HookSettingChanged();
 
-        // 持续门闩：关 UI 翻译期间反复强制 Sweep=false / locale=ja，防止游戏或其它插件写回后弹回中文。
+        // 只门闩 ZhFull Enable/Sweep；绝不改游戏 locale（改 ja 会 CDN 404 打不开）。
         _holdTimer += Time.unscaledDeltaTime;
         if (_holdTimer >= HoldIntervalSeconds)
         {
             _holdTimer = 0f;
-            PeerUiPlugins.Hold(
-                Config.TranslationEnabled.Value,
-                forceRefreshOnLocaleFix: !Config.TranslationEnabled.Value
-            );
+            PeerUiPlugins.Hold(Config.TranslationEnabled.Value);
         }
 
         try
@@ -85,7 +82,6 @@ public sealed class UiTranslateManager : MonoBehaviour
         if (_settingHooked || Config.TranslationEnabled == null)
             return;
 
-        // 必须用静态回调：实例方法带 object/EventArgs 会被 Il2CppInterop 注册并告警。
         Config.TranslationEnabled.SettingChanged += OnTranslationSettingChanged;
         _settingHooked = true;
     }
@@ -95,9 +91,8 @@ public sealed class UiTranslateManager : MonoBehaviour
         if (_applyingSetting)
             return;
 
-        // ZhMenu「UI 词典」等外部改 ConfigEntry 时，也要同步同伴并刷新。
         bool enabled = Config.TranslationEnabled.Value;
-        PeerUiPlugins.Hold(enabled, forceRefreshOnLocaleFix: !enabled);
+        PeerUiPlugins.Hold(enabled);
         int refreshed = UiTextRefresh.ApplyAll(translate: enabled);
         Plugin.Log.LogInfo(
             $"[ui] Translation.Enabled = {enabled} (SettingChanged, refreshed={refreshed})"
@@ -117,7 +112,7 @@ public sealed class UiTranslateManager : MonoBehaviour
             _applyingSetting = false;
         }
 
-        PeerUiPlugins.Hold(next, forceRefreshOnLocaleFix: !next);
+        PeerUiPlugins.Hold(next);
 
         int refreshed = UiTextRefresh.ApplyAll(translate: next);
         string state = next ? "开" : "关";

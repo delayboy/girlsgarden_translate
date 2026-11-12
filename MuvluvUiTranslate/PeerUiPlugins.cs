@@ -8,11 +8,12 @@ using HarmonyLib;
 namespace MuvluvUiTranslate;
 
 /// <summary>
-/// 与其它也会改界面语言的插件对齐开关，并在关闭期间持续门闩。
-/// <list type="bullet">
-/// <item>ZhFull：TMP Hook 看 Enable，Sweep 只看 Sweep；二者都要关，且要防被写回。</item>
-/// <item>LocaleForce / 游戏自身：会把 Unity Localization 设回 zh-Hans，导致「F6 马上生效、过一会又中文」。</item>
-/// </list>
+/// 与 ZhFull 对齐 UI 翻译开关，并在关闭期间持续门闩 Enable/Sweep。
+/// <para>
+/// 注意：绝不要改 Unity <c>SelectedLocale</c> / 门闩 LocaleForce。
+/// 本客户端 CDN 本地化资源依赖 zh-Hans；切到 ja 会 404（LocalizeStrings），表现为打不开/卡标题。
+/// 「关 UI 翻译」只停词典 TMP 覆盖（本插件 + ZhFull），原生 locale 仍由 LocaleForce 维持 zh-Hans。
+/// </para>
 /// </summary>
 internal static class PeerUiPlugins
 {
@@ -20,46 +21,31 @@ internal static class PeerUiPlugins
     private static IDictionary _zhFullExact;
     private static Dictionary<string, string> _zhFullReverse;
     private static int _zhFullReverseExactCount = -1;
-    private static bool _localeForcePatched;
     private static bool _zhFullSweepPatched;
     private static float _nextReassertLogAt;
-    private static int _reassertLocaleCount;
     private static int _reassertZhFullCount;
 
-    /// <summary>
-    /// 按当前 UI 翻译开关对齐同伴插件；返回是否已具备对齐所需程序集/组件。
-    /// </summary>
-    public static bool SyncEnabled(bool enabled) => Hold(enabled, forceRefreshOnLocaleFix: false);
+    public static bool SyncEnabled(bool enabled) => Hold(enabled);
 
-    /// <summary>
-    /// 持续门闩：关翻译时强制 ZhFull Enable/Sweep=false、locale=ja；开翻译时对齐回中文侧。
-    /// </summary>
-    public static bool Hold(bool enabled, bool forceRefreshOnLocaleFix)
+    /// <summary>关翻译时强制 ZhFull Enable/Sweep=false；开翻译时对齐为 true。</summary>
+    public static bool Hold(bool enabled)
     {
         bool zhOk = TrySetZhFullFlags(enabled, out bool zhChanged);
-        bool patchLocale = TryPatchLocaleForceGate();
         bool patchSweep = TryPatchZhFullSweepGate();
-        bool localeOk = TrySetGameLocale(enabled ? "zh-Hans" : "ja", out bool localeChanged);
 
         if (zhChanged)
-            _reassertZhFullCount++;
-        if (localeChanged)
-            _reassertLocaleCount++;
-
-        // 有人把 locale/ZhFull 写回去时打节流日志，便于确认「弹回」来源。
-        if ((zhChanged || localeChanged) && UnityEngine.Time.unscaledTime >= _nextReassertLogAt)
         {
-            _nextReassertLogAt = UnityEngine.Time.unscaledTime + 8f;
-            Plugin.Log.LogInfo(
-                $"[ui] hold reassert enabled={enabled} zhFullChanged={zhChanged} localeChanged={localeChanged} "
-                    + $"(zhN={_reassertZhFullCount}, localeN={_reassertLocaleCount})"
-            );
+            _reassertZhFullCount++;
+            if (UnityEngine.Time.unscaledTime >= _nextReassertLogAt)
+            {
+                _nextReassertLogAt = UnityEngine.Time.unscaledTime + 8f;
+                Plugin.Log.LogInfo(
+                    $"[ui] hold reassert ZhFull Enable/Sweep={enabled} (count={_reassertZhFullCount})"
+                );
+            }
         }
 
-        if (!enabled && localeChanged && forceRefreshOnLocaleFix)
-            UiTextRefresh.ApplyAll(translate: false);
-
-        return zhOk && patchLocale && patchSweep && localeOk;
+        return zhOk && patchSweep;
     }
 
     public static bool TryUntranslate(string chinese, out string japanese)
@@ -121,184 +107,6 @@ internal static class PeerUiPlugins
         }
     }
 
-    private static bool TrySetGameLocale(string code, out bool changed)
-    {
-        changed = false;
-        try
-        {
-            Type settingsType = FindType(
-                "Unity.Localization",
-                "UnityEngine.Localization.Settings.LocalizationSettings"
-            );
-            if (settingsType == null)
-                return false;
-
-            object selected = settingsType
-                .GetProperty("SelectedLocale", BindingFlags.Public | BindingFlags.Static)
-                ?.GetValue(null);
-            if (selected == null)
-                return false;
-
-            object available = settingsType
-                .GetProperty("AvailableLocales", BindingFlags.Public | BindingFlags.Static)
-                ?.GetValue(null);
-            if (available == null)
-                return false;
-
-            string current = ReadLocaleCode(selected) ?? "?";
-            if (current == code)
-                return true;
-
-            object target = ResolveLocale(available, code);
-            if (target == null)
-            {
-                Plugin.Log.LogWarning($"[ui] locale '{code}' not found");
-                return true;
-            }
-
-            settingsType
-                .GetProperty("SelectedLocale", BindingFlags.Public | BindingFlags.Static)
-                ?.SetValue(null, target);
-            changed = true;
-            Plugin.Log.LogInfo($"[ui] set game locale '{code}' (was '{current}')");
-            return true;
-        }
-        catch (Exception e)
-        {
-            Plugin.Log.LogWarning($"[ui] set locale failed: {e.Message}");
-            return false;
-        }
-    }
-
-    private static object ResolveLocale(object available, string code)
-    {
-        MethodInfo getLocale = available
-            .GetType()
-            .GetMethods(BindingFlags.Public | BindingFlags.Instance)
-            .FirstOrDefault(m =>
-                m.Name == "GetLocale"
-                && m.GetParameters().Length == 1
-                && m.GetParameters()[0].ParameterType.Name.Contains("LocaleIdentifier")
-            );
-
-        if (getLocale != null)
-        {
-            Type idType = getLocale.GetParameters()[0].ParameterType;
-            object id = CreateLocaleIdentifier(idType, code);
-            if (id != null)
-            {
-                object found = getLocale.Invoke(available, new[] { id });
-                if (found != null)
-                    return found;
-            }
-        }
-
-        object locales = available
-            .GetType()
-            .GetProperty("Locales", BindingFlags.Public | BindingFlags.Instance)
-            ?.GetValue(available);
-        if (locales is not IEnumerable list)
-            return null;
-
-        foreach (object locale in list)
-        {
-            if (locale == null)
-                continue;
-            if (ReadLocaleCode(locale) == code)
-                return locale;
-        }
-
-        return null;
-    }
-
-    private static object CreateLocaleIdentifier(Type idType, string code)
-    {
-        try
-        {
-            ConstructorInfo ctor = idType.GetConstructor(new[] { typeof(string) });
-            if (ctor != null)
-                return ctor.Invoke(new object[] { code });
-        }
-        catch
-        {
-        }
-
-        try
-        {
-            MethodInfo op = idType.GetMethod(
-                "op_Implicit",
-                BindingFlags.Public | BindingFlags.Static,
-                null,
-                new[] { typeof(string) },
-                null
-            );
-            if (op != null)
-                return op.Invoke(null, new object[] { code });
-        }
-        catch
-        {
-        }
-
-        return null;
-    }
-
-    private static string ReadLocaleCode(object locale)
-    {
-        try
-        {
-            object identifier = locale
-                .GetType()
-                .GetProperty("Identifier", BindingFlags.Public | BindingFlags.Instance)
-                ?.GetValue(locale);
-            if (identifier == null)
-                return null;
-            return identifier
-                    .GetType()
-                    .GetProperty("Code", BindingFlags.Public | BindingFlags.Instance)
-                    ?.GetValue(identifier) as string;
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    private static bool TryPatchLocaleForceGate()
-    {
-        if (_localeForcePatched)
-            return true;
-
-        try
-        {
-            Assembly asm = FindAssembly("LocaleForce");
-            if (asm == null)
-                return true;
-
-            Type forcerType = asm.GetType("LocaleForce.LocaleForcer");
-            MethodInfo update = forcerType?.GetMethod(
-                "Update",
-                BindingFlags.Public | BindingFlags.Instance
-            );
-            if (update == null)
-                return false;
-
-            MethodInfo prefix = typeof(PeerUiPlugins).GetMethod(
-                nameof(LocaleForceUpdatePrefix),
-                BindingFlags.NonPublic | BindingFlags.Static
-            );
-            var harmony = new Harmony(Plugin.PluginGuid + ".localeforce");
-            harmony.Patch(update, prefix: new HarmonyMethod(prefix));
-            _localeForcePatched = true;
-            Plugin.Log.LogInfo("[ui] gated LocaleForce.Update behind Translation.Enabled");
-            return true;
-        }
-        catch (Exception e)
-        {
-            Plugin.Log.LogWarning($"[ui] LocaleForce gate failed: {e.Message}");
-            return false;
-        }
-    }
-
     /// <summary>即使 Sweep cfg 被写回 true，关 UI 翻译时也不允许 ZhFull 扫屏。</summary>
     private static bool TryPatchZhFullSweepGate()
     {
@@ -335,8 +143,6 @@ internal static class PeerUiPlugins
             return false;
         }
     }
-
-    private static bool LocaleForceUpdatePrefix() => Config.TranslationEnabled.Value;
 
     private static bool ZhFullSweepPrefix() => Config.TranslationEnabled.Value;
 
@@ -375,12 +181,6 @@ internal static class PeerUiPlugins
                     return false;
                 }
             });
-    }
-
-    private static Type FindType(string assemblyName, string typeName)
-    {
-        Assembly asm = FindAssembly(assemblyName);
-        return asm?.GetType(typeName);
     }
 
     private static void EnsureZhFullReverse()
