@@ -1,34 +1,40 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace MuvluvUiTranslate;
 
 /// <summary>
-/// 帧循环组件：F10 热重载词典、F6 切换 UI 翻译、定时落盘捕获、退出兜底落盘。
+/// 帧循环组件：F10 热重载词典、F6 切换 UI 翻译、持续门闩同伴插件、定时落盘。
 /// </summary>
 public sealed class UiTranslateManager : MonoBehaviour
 {
     private const float FlushIntervalSeconds = 10f;
+    private const float HoldIntervalSeconds = 0.5f;
     private const float ToastSeconds = 2.2f;
 
     private float _flushTimer;
+    private float _holdTimer;
     private string _toast = "";
     private float _toastUntil;
     private GUIStyle _toastStyle;
     private Font _toastFont;
-    private float _peerSyncRetryAt;
-    private int _peerSyncTries;
-    private bool _peerSynced;
+    private static bool _settingHooked;
+    private static bool _applyingSetting;
 
     private void Update()
     {
-        // LocaleForce 可能晚于本插件创建组件；启动后短暂重试对齐 ZhFull/Locale/LocaleForce。
-        if (!_peerSynced && _peerSyncTries < 40 && Time.unscaledTime >= _peerSyncRetryAt)
+        HookSettingChanged();
+
+        // 持续门闩：关 UI 翻译期间反复强制 Sweep=false / locale=ja，防止游戏或其它插件写回后弹回中文。
+        _holdTimer += Time.unscaledDeltaTime;
+        if (_holdTimer >= HoldIntervalSeconds)
         {
-            _peerSyncRetryAt = Time.unscaledTime + 0.5f;
-            _peerSyncTries++;
-            if (PeerUiPlugins.SyncEnabled(Config.TranslationEnabled.Value))
-                _peerSynced = true;
+            _holdTimer = 0f;
+            PeerUiPlugins.Hold(
+                Config.TranslationEnabled.Value,
+                forceRefreshOnLocaleFix: !Config.TranslationEnabled.Value
+            );
         }
 
         try
@@ -74,13 +80,44 @@ public sealed class UiTranslateManager : MonoBehaviour
 
     private void OnApplicationQuit() => CaptureRecorder.Flush();
 
+    private static void HookSettingChanged()
+    {
+        if (_settingHooked || Config.TranslationEnabled == null)
+            return;
+
+        // 必须用静态回调：实例方法带 object/EventArgs 会被 Il2CppInterop 注册并告警。
+        Config.TranslationEnabled.SettingChanged += OnTranslationSettingChanged;
+        _settingHooked = true;
+    }
+
+    private static void OnTranslationSettingChanged(object sender, EventArgs e)
+    {
+        if (_applyingSetting)
+            return;
+
+        // ZhMenu「UI 词典」等外部改 ConfigEntry 时，也要同步同伴并刷新。
+        bool enabled = Config.TranslationEnabled.Value;
+        PeerUiPlugins.Hold(enabled, forceRefreshOnLocaleFix: !enabled);
+        int refreshed = UiTextRefresh.ApplyAll(translate: enabled);
+        Plugin.Log.LogInfo(
+            $"[ui] Translation.Enabled = {enabled} (SettingChanged, refreshed={refreshed})"
+        );
+    }
+
     private void ToggleUiTranslation()
     {
         bool next = !Config.TranslationEnabled.Value;
-        Config.TranslationEnabled.Value = next;
-        // ConfigEntry 赋值会触发 BepInEx 写回 cfg，重启后保持。
-        // 必须同步 ZhFull 的 Enable + Sweep，否则 Sweep 会把界面扫回中文。
-        _peerSynced = PeerUiPlugins.SyncEnabled(next);
+        _applyingSetting = true;
+        try
+        {
+            Config.TranslationEnabled.Value = next;
+        }
+        finally
+        {
+            _applyingSetting = false;
+        }
+
+        PeerUiPlugins.Hold(next, forceRefreshOnLocaleFix: !next);
 
         int refreshed = UiTextRefresh.ApplyAll(translate: next);
         string state = next ? "开" : "关";

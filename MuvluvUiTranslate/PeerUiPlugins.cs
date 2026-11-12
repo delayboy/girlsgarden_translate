@@ -8,10 +8,10 @@ using HarmonyLib;
 namespace MuvluvUiTranslate;
 
 /// <summary>
-/// 与其它也会改界面语言的插件对齐开关。
+/// 与其它也会改界面语言的插件对齐开关，并在关闭期间持续门闩。
 /// <list type="bullet">
-/// <item>ZhFull：TMP Hook 看 Enable，但定时 Sweep 只看 Sweep；只关 Enable 仍会扫成中文。</item>
-/// <item>LocaleForce：启动后把 Unity Localization 强制为 zh-Hans；关词典后原生 UI 仍是中文。</item>
+/// <item>ZhFull：TMP Hook 看 Enable，Sweep 只看 Sweep；二者都要关，且要防被写回。</item>
+/// <item>LocaleForce / 游戏自身：会把 Unity Localization 设回 zh-Hans，导致「F6 马上生效、过一会又中文」。</item>
 /// </list>
 /// </summary>
 internal static class PeerUiPlugins
@@ -21,22 +21,47 @@ internal static class PeerUiPlugins
     private static Dictionary<string, string> _zhFullReverse;
     private static int _zhFullReverseExactCount = -1;
     private static bool _localeForcePatched;
+    private static bool _zhFullSweepPatched;
+    private static float _nextReassertLogAt;
+    private static int _reassertLocaleCount;
+    private static int _reassertZhFullCount;
 
     /// <summary>
-    /// 同步 ZhFull / LocaleForce / 游戏 Locale。
-    /// 返回 true 表示本轮对齐完成（可停止重试）；false 表示依赖尚未就绪，请稍后重试。
+    /// 按当前 UI 翻译开关对齐同伴插件；返回是否已具备对齐所需程序集/组件。
     /// </summary>
-    public static bool SyncEnabled(bool enabled)
+    public static bool SyncEnabled(bool enabled) => Hold(enabled, forceRefreshOnLocaleFix: false);
+
+    /// <summary>
+    /// 持续门闩：关翻译时强制 ZhFull Enable/Sweep=false、locale=ja；开翻译时对齐回中文侧。
+    /// </summary>
+    public static bool Hold(bool enabled, bool forceRefreshOnLocaleFix)
     {
-        bool zhOk = TrySetZhFullFlags(enabled);
-        bool patchOk = TryPatchLocaleForceGate();
-        bool localeOk = TrySetGameLocale(enabled ? "zh-Hans" : "ja");
-        return zhOk && patchOk && localeOk;
+        bool zhOk = TrySetZhFullFlags(enabled, out bool zhChanged);
+        bool patchLocale = TryPatchLocaleForceGate();
+        bool patchSweep = TryPatchZhFullSweepGate();
+        bool localeOk = TrySetGameLocale(enabled ? "zh-Hans" : "ja", out bool localeChanged);
+
+        if (zhChanged)
+            _reassertZhFullCount++;
+        if (localeChanged)
+            _reassertLocaleCount++;
+
+        // 有人把 locale/ZhFull 写回去时打节流日志，便于确认「弹回」来源。
+        if ((zhChanged || localeChanged) && UnityEngine.Time.unscaledTime >= _nextReassertLogAt)
+        {
+            _nextReassertLogAt = UnityEngine.Time.unscaledTime + 8f;
+            Plugin.Log.LogInfo(
+                $"[ui] hold reassert enabled={enabled} zhFullChanged={zhChanged} localeChanged={localeChanged} "
+                    + $"(zhN={_reassertZhFullCount}, localeN={_reassertLocaleCount})"
+            );
+        }
+
+        if (!enabled && localeChanged && forceRefreshOnLocaleFix)
+            UiTextRefresh.ApplyAll(translate: false);
+
+        return zhOk && patchLocale && patchSweep && localeOk;
     }
 
-    /// <summary>
-    /// 用 ZhFull 大词典做无歧义 exact 反向还原（本插件词典覆盖面远小于 ZhFull）。
-    /// </summary>
     public static bool TryUntranslate(string chinese, out string japanese)
     {
         japanese = null;
@@ -55,8 +80,9 @@ internal static class PeerUiPlugins
         }
     }
 
-    private static bool TrySetZhFullFlags(bool enabled)
+    private static bool TrySetZhFullFlags(bool enabled, out bool changed)
     {
+        changed = false;
         try
         {
             Assembly asm = FindAssembly("ZhFull");
@@ -77,8 +103,9 @@ internal static class PeerUiPlugins
 
             bool changedEnable = SetConfigBool(cfg, "Enable", enabled);
             bool changedSweep = SetConfigBool(cfg, "Sweep", enabled);
+            changed = changedEnable || changedSweep;
 
-            if (changedEnable || changedSweep)
+            if (changed)
             {
                 Plugin.Log.LogInfo(
                     $"[ui] synced ZhFull Enable={enabled}, Sweep={enabled}"
@@ -94,9 +121,9 @@ internal static class PeerUiPlugins
         }
     }
 
-    /// <summary>经反射设置 Unity Localization，避免与 Il2Cpp 程序集 Locale 类型冲突。</summary>
-    private static bool TrySetGameLocale(string code)
+    private static bool TrySetGameLocale(string code, out bool changed)
     {
+        changed = false;
         try
         {
             Type settingsType = FindType(
@@ -132,6 +159,7 @@ internal static class PeerUiPlugins
             settingsType
                 .GetProperty("SelectedLocale", BindingFlags.Public | BindingFlags.Static)
                 ?.SetValue(null, target);
+            changed = true;
             Plugin.Log.LogInfo($"[ui] set game locale '{code}' (was '{current}')");
             return true;
         }
@@ -165,7 +193,6 @@ internal static class PeerUiPlugins
             }
         }
 
-        // 回退：遍历 Locales 列表按 Code 匹配
         object locales = available
             .GetType()
             .GetProperty("Locales", BindingFlags.Public | BindingFlags.Instance)
@@ -236,9 +263,6 @@ internal static class PeerUiPlugins
         }
     }
 
-    /// <summary>
-    /// 给 LocaleForce.Update 加门闩：UI 翻译关闭时直接跳过，避免再次强制 zh-Hans。
-    /// </summary>
     private static bool TryPatchLocaleForceGate()
     {
         if (_localeForcePatched)
@@ -275,8 +299,46 @@ internal static class PeerUiPlugins
         }
     }
 
-    // Harmony prefix：返回 false 跳过原方法。
+    /// <summary>即使 Sweep cfg 被写回 true，关 UI 翻译时也不允许 ZhFull 扫屏。</summary>
+    private static bool TryPatchZhFullSweepGate()
+    {
+        if (_zhFullSweepPatched)
+            return true;
+
+        try
+        {
+            Assembly asm = FindAssembly("ZhFull");
+            if (asm == null)
+                return true;
+
+            Type managerType = asm.GetType("ZhFull.Manager");
+            MethodInfo sweep = managerType?.GetMethod(
+                "Sweep",
+                BindingFlags.NonPublic | BindingFlags.Instance
+            );
+            if (sweep == null)
+                return false;
+
+            MethodInfo prefix = typeof(PeerUiPlugins).GetMethod(
+                nameof(ZhFullSweepPrefix),
+                BindingFlags.NonPublic | BindingFlags.Static
+            );
+            var harmony = new Harmony(Plugin.PluginGuid + ".zhfullsweep");
+            harmony.Patch(sweep, prefix: new HarmonyMethod(prefix));
+            _zhFullSweepPatched = true;
+            Plugin.Log.LogInfo("[ui] gated ZhFull.Sweep behind Translation.Enabled");
+            return true;
+        }
+        catch (Exception e)
+        {
+            Plugin.Log.LogWarning($"[ui] ZhFull Sweep gate failed: {e.Message}");
+            return false;
+        }
+    }
+
     private static bool LocaleForceUpdatePrefix() => Config.TranslationEnabled.Value;
+
+    private static bool ZhFullSweepPrefix() => Config.TranslationEnabled.Value;
 
     private static bool SetConfigBool(object cfg, string fieldName, bool value)
     {
