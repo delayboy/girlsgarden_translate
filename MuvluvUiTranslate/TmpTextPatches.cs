@@ -19,6 +19,7 @@ internal static class TextFlow
 
             if (UiDictionary.TryTranslate(text, out var translated))
             {
+                AppliedTextTracker.Remember(instance, text);
                 text = translated;
                 return;
             }
@@ -42,6 +43,7 @@ internal static class TextFlow
 
             if (UiDictionary.TryTranslate(current, out var translated))
             {
+                AppliedTextTracker.Remember(instance, current);
                 instance.text = translated; // 经过 set_text 钩子，中文不会再次命中
             }
             else

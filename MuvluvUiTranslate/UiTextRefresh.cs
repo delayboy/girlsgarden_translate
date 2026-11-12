@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 namespace MuvluvUiTranslate;
 
 /// <summary>
-/// 开关切换后刷新当前已上屏 TMP：开→套词典；关→按 exact 反向表尽量还原日文。
+/// 开关切换后刷新已上屏 TMP：开→套词典并记原文；关→优先还原本插件改过的控件，再 exact 反查。
 /// </summary>
 internal static class UiTextRefresh
 {
@@ -33,11 +33,12 @@ internal static class UiTextRefresh
                         && zh != current
                     )
                     {
+                        AppliedTextTracker.Remember(tmp, current);
                         tmp.text = zh;
                         changed++;
                     }
                 }
-                else if (TryUntranslateAny(current, out string jp) && jp != current)
+                else if (TryRestore(tmp, current, out string jp) && jp != current)
                 {
                     tmp.text = jp;
                     changed++;
@@ -50,6 +51,21 @@ internal static class UiTextRefresh
         }
 
         return changed;
+    }
+
+    private static bool TryRestore(TMP_Text tmp, string current, out string japanese)
+    {
+        if (AppliedTextTracker.TryRestore(tmp, out japanese) && !string.IsNullOrEmpty(japanese))
+            return true;
+
+        if (
+            UiDictionary.TryUntranslate(current, out japanese)
+            && !string.IsNullOrEmpty(japanese)
+        )
+            return true;
+
+        return PeerUiPlugins.TryUntranslate(current, out japanese)
+            && !string.IsNullOrEmpty(japanese);
     }
 
     private static List<TMP_Text> Collect()
@@ -99,17 +115,5 @@ internal static class UiTextRefresh
         }
 
         return list;
-    }
-
-    private static bool TryUntranslateAny(string chinese, out string japanese)
-    {
-        if (
-            UiDictionary.TryUntranslate(chinese, out japanese)
-            && !string.IsNullOrEmpty(japanese)
-        )
-            return true;
-
-        return PeerUiPlugins.TryUntranslate(chinese, out japanese)
-            && !string.IsNullOrEmpty(japanese);
     }
 }

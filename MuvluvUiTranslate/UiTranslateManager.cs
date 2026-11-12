@@ -5,13 +5,13 @@ using UnityEngine.InputSystem;
 namespace MuvluvUiTranslate;
 
 /// <summary>
-/// 帧循环：F10 热重载、F6 切换 UI 翻译、持续门闩 ZhFull、定时落盘。
+/// 帧循环：F10 热重载、F6 切换 UI 词典覆盖、持续门闩 ZhFull、定时落盘。
 /// </summary>
 public sealed class UiTranslateManager : MonoBehaviour
 {
     private const float FlushIntervalSeconds = 10f;
     private const float HoldIntervalSeconds = 1f;
-    private const float ToastSeconds = 2.2f;
+    private const float ToastSeconds = 3.2f;
 
     private float _flushTimer;
     private float _holdTimer;
@@ -21,12 +21,20 @@ public sealed class UiTranslateManager : MonoBehaviour
     private Font _toastFont;
     private static bool _settingHooked;
     private static bool _applyingSetting;
+    private static UiTranslateManager _instance;
+
+    private void OnEnable() => _instance = this;
+
+    private void OnDisable()
+    {
+        if (_instance == this)
+            _instance = null;
+    }
 
     private void Update()
     {
         HookSettingChanged();
 
-        // 只门闩 ZhFull Enable/Sweep；绝不改游戏 locale（改 ja 会 CDN 404 打不开）。
         _holdTimer += Time.unscaledDeltaTime;
         if (_holdTimer >= HoldIntervalSeconds)
         {
@@ -69,8 +77,8 @@ public sealed class UiTranslateManager : MonoBehaviour
             return;
 
         EnsureToastStyle();
-        const float width = 320f;
-        const float height = 36f;
+        const float width = 420f;
+        const float height = 52f;
         var rect = new Rect((Screen.width - width) * 0.5f, 28f, width, height);
         GUI.Label(rect, _toast, _toastStyle);
     }
@@ -91,12 +99,7 @@ public sealed class UiTranslateManager : MonoBehaviour
         if (_applyingSetting)
             return;
 
-        bool enabled = Config.TranslationEnabled.Value;
-        PeerUiPlugins.Hold(enabled);
-        int refreshed = UiTextRefresh.ApplyAll(translate: enabled);
-        Plugin.Log.LogInfo(
-            $"[ui] Translation.Enabled = {enabled} (SettingChanged, refreshed={refreshed})"
-        );
+        ApplyTranslationState(Config.TranslationEnabled.Value, "SettingChanged", showToast: false);
     }
 
     private void ToggleUiTranslation()
@@ -112,14 +115,27 @@ public sealed class UiTranslateManager : MonoBehaviour
             _applyingSetting = false;
         }
 
-        PeerUiPlugins.Hold(next);
+        ApplyTranslationState(next, $"hotkey {Config.TranslationToggleHotkey.Value}", showToast: true);
+    }
 
-        int refreshed = UiTextRefresh.ApplyAll(translate: next);
-        string state = next ? "开" : "关";
+    private static void ApplyTranslationState(bool enabled, string reason, bool showToast)
+    {
+        PeerUiPlugins.Hold(enabled);
+        int refreshed = UiTextRefresh.ApplyAll(translate: enabled);
+        string zhState = PeerUiPlugins.DescribeZhFullState();
+
         Plugin.Log.LogInfo(
-            $"[ui] Translation.Enabled = {next} (hotkey {Config.TranslationToggleHotkey.Value}, refreshed={refreshed})"
+            $"[ui] Translation.Enabled = {enabled} ({reason}, refreshed={refreshed}, tracked={AppliedTextTracker.Count}, {zhState})"
         );
-        ShowToast($"UI 翻译 → {state}（刷新 {refreshed}）");
+
+        if (!showToast || _instance == null)
+            return;
+
+        string state = enabled ? "开" : "关";
+        string tip = enabled
+            ? $"UI 词典 → {state}（刷新 {refreshed}）"
+            : $"UI 词典 → {state}（还原 {refreshed}）\n原生 CDN 简中关不掉；已停 ZhFull/本插件覆盖";
+        _instance.ShowToast(tip);
     }
 
     private void ShowToast(string message)
@@ -137,11 +153,12 @@ public sealed class UiTranslateManager : MonoBehaviour
         _toastStyle = new GUIStyle
         {
             alignment = TextAnchor.MiddleCenter,
-            fontSize = 16,
+            fontSize = 15,
             font = _toastFont,
+            wordWrap = true,
         };
         _toastStyle.normal.textColor = Color.white;
-        _toastStyle.normal.background = MakeBg(new Color(0.08f, 0.1f, 0.16f, 0.88f));
+        _toastStyle.normal.background = MakeBg(new Color(0.08f, 0.1f, 0.16f, 0.9f));
     }
 
     private static Font TryChineseFont()
@@ -151,7 +168,7 @@ public sealed class UiTranslateManager : MonoBehaviour
         {
             try
             {
-                Font font = Font.CreateDynamicFontFromOSFont(face, 16);
+                Font font = Font.CreateDynamicFontFromOSFont(face, 15);
                 if (font != null)
                     return font;
             }

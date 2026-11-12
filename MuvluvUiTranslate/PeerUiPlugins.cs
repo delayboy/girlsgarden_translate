@@ -8,12 +8,9 @@ using HarmonyLib;
 namespace MuvluvUiTranslate;
 
 /// <summary>
-/// 与 ZhFull 对齐 UI 翻译开关，并在关闭期间持续门闩 Enable/Sweep。
-/// <para>
-/// 注意：绝不要改 Unity <c>SelectedLocale</c> / 门闩 LocaleForce。
-/// 本客户端 CDN 本地化资源依赖 zh-Hans；切到 ja 会 404（LocalizeStrings），表现为打不开/卡标题。
-/// 「关 UI 翻译」只停词典 TMP 覆盖（本插件 + ZhFull），原生 locale 仍由 LocaleForce 维持 zh-Hans。
-/// </para>
+/// 与 ZhFull 对齐 UI 词典覆盖开关。
+/// 绝不改 Unity SelectedLocale / LocaleForce（切 ja 会 CDN 404 打不开）。
+/// 关 F6 = 停本插件 + ZhFull 的 TMP 词典覆盖；游戏原生 CDN 简中关不掉。
 /// </summary>
 internal static class PeerUiPlugins
 {
@@ -21,17 +18,16 @@ internal static class PeerUiPlugins
     private static IDictionary _zhFullExact;
     private static Dictionary<string, string> _zhFullReverse;
     private static int _zhFullReverseExactCount = -1;
-    private static bool _zhFullSweepPatched;
+    private static bool _zhFullGatesPatched;
     private static float _nextReassertLogAt;
     private static int _reassertZhFullCount;
 
     public static bool SyncEnabled(bool enabled) => Hold(enabled);
 
-    /// <summary>关翻译时强制 ZhFull Enable/Sweep=false；开翻译时对齐为 true。</summary>
     public static bool Hold(bool enabled)
     {
         bool zhOk = TrySetZhFullFlags(enabled, out bool zhChanged);
-        bool patchSweep = TryPatchZhFullSweepGate();
+        bool gatesOk = TryPatchZhFullGates();
 
         if (zhChanged)
         {
@@ -45,7 +41,25 @@ internal static class PeerUiPlugins
             }
         }
 
-        return zhOk && patchSweep;
+        return zhOk && gatesOk;
+    }
+
+    /// <summary>读出 ZhFull 当前 Enable/Sweep，供 F6 日志核对。</summary>
+    public static string DescribeZhFullState()
+    {
+        try
+        {
+            if (!TryGetZhFullCfg(out object cfg))
+                return "ZhFull=absent";
+
+            bool? enable = ReadConfigBool(cfg, "Enable");
+            bool? sweep = ReadConfigBool(cfg, "Sweep");
+            return $"ZhFull Enable={enable} Sweep={sweep} gates={_zhFullGatesPatched}";
+        }
+        catch (Exception e)
+        {
+            return $"ZhFull=? ({e.Message})";
+        }
     }
 
     public static bool TryUntranslate(string chinese, out string japanese)
@@ -71,22 +85,14 @@ internal static class PeerUiPlugins
         changed = false;
         try
         {
-            Assembly asm = FindAssembly("ZhFull");
-            if (asm == null)
+            if (!TryGetZhFullCfg(out object cfg))
             {
-                _zhFullPresent = false;
-                return true;
+                _zhFullPresent = FindAssembly("ZhFull") != null ? true : false;
+                // cfg 尚未就绪时稍后重试
+                return FindAssembly("ZhFull") == null;
             }
 
             _zhFullPresent = true;
-
-            Type pluginType = asm.GetType("ZhFull.Plugin");
-            object cfg = pluginType
-                ?.GetField("Cfg", BindingFlags.Public | BindingFlags.Static)
-                ?.GetValue(null);
-            if (cfg == null)
-                return false;
-
             bool changedEnable = SetConfigBool(cfg, "Enable", enabled);
             bool changedSweep = SetConfigBool(cfg, "Sweep", enabled);
             changed = changedEnable || changedSweep;
@@ -107,10 +113,26 @@ internal static class PeerUiPlugins
         }
     }
 
-    /// <summary>即使 Sweep cfg 被写回 true，关 UI 翻译时也不允许 ZhFull 扫屏。</summary>
-    private static bool TryPatchZhFullSweepGate()
+    private static bool TryGetZhFullCfg(out object cfg)
     {
-        if (_zhFullSweepPatched)
+        cfg = null;
+        Assembly asm = FindAssembly("ZhFull");
+        if (asm == null)
+            return false;
+
+        Type pluginType = asm.GetType("ZhFull.Plugin");
+        cfg = pluginType
+            ?.GetField("Cfg", BindingFlags.Public | BindingFlags.Static)
+            ?.GetValue(null);
+        return cfg != null;
+    }
+
+    /// <summary>
+    /// 门闩 ZhFull 的 Incoming/Baked/Sweep：即使 Enable 被写回，关 UI 翻译时也不再改 TMP。
+    /// </summary>
+    private static bool TryPatchZhFullGates()
+    {
+        if (_zhFullGatesPatched)
             return true;
 
         try
@@ -119,32 +141,78 @@ internal static class PeerUiPlugins
             if (asm == null)
                 return true;
 
-            Type managerType = asm.GetType("ZhFull.Manager");
-            MethodInfo sweep = managerType?.GetMethod(
+            var harmony = new Harmony(Plugin.PluginGuid + ".zhfullgates");
+            int patched = 0;
+
+            patched += PatchPrefix(
+                harmony,
+                asm.GetType("ZhFull.TextFlow"),
+                "Incoming",
+                nameof(ZhFullAllowPrefix),
+                BindingFlags.Public | BindingFlags.Static
+            );
+            patched += PatchPrefix(
+                harmony,
+                asm.GetType("ZhFull.TextFlow"),
+                "Baked",
+                nameof(ZhFullAllowPrefix),
+                BindingFlags.Public | BindingFlags.Static
+            );
+            patched += PatchPrefix(
+                harmony,
+                asm.GetType("ZhFull.Manager"),
                 "Sweep",
+                nameof(ZhFullAllowPrefix),
                 BindingFlags.NonPublic | BindingFlags.Instance
             );
-            if (sweep == null)
+
+            if (patched < 3)
                 return false;
 
-            MethodInfo prefix = typeof(PeerUiPlugins).GetMethod(
-                nameof(ZhFullSweepPrefix),
-                BindingFlags.NonPublic | BindingFlags.Static
+            _zhFullGatesPatched = true;
+            Plugin.Log.LogInfo(
+                $"[ui] gated ZhFull Incoming/Baked/Sweep behind Translation.Enabled (n={patched})"
             );
-            var harmony = new Harmony(Plugin.PluginGuid + ".zhfullsweep");
-            harmony.Patch(sweep, prefix: new HarmonyMethod(prefix));
-            _zhFullSweepPatched = true;
-            Plugin.Log.LogInfo("[ui] gated ZhFull.Sweep behind Translation.Enabled");
             return true;
         }
         catch (Exception e)
         {
-            Plugin.Log.LogWarning($"[ui] ZhFull Sweep gate failed: {e.Message}");
+            Plugin.Log.LogWarning($"[ui] ZhFull gates failed: {e.Message}");
             return false;
         }
     }
 
-    private static bool ZhFullSweepPrefix() => Config.TranslationEnabled.Value;
+    private static int PatchPrefix(
+        Harmony harmony,
+        Type type,
+        string methodName,
+        string prefixName,
+        BindingFlags flags
+    )
+    {
+        if (type == null)
+            return 0;
+
+        MethodInfo method = type.GetMethod(methodName, flags);
+        if (method == null)
+        {
+            // Incoming 有 ref string，再试不限定参数
+            method = type.GetMethods(flags).FirstOrDefault(m => m.Name == methodName);
+        }
+
+        if (method == null)
+            return 0;
+
+        MethodInfo prefix = typeof(PeerUiPlugins).GetMethod(
+            prefixName,
+            BindingFlags.NonPublic | BindingFlags.Static
+        );
+        harmony.Patch(method, prefix: new HarmonyMethod(prefix));
+        return 1;
+    }
+
+    // Harmony prefix：Translation 关闭时跳过 ZhFull 词典写入。
+    private static bool ZhFullAllowPrefix() => Config.TranslationEnabled.Value;
 
     private static bool SetConfigBool(object cfg, string fieldName, bool value)
     {
@@ -164,6 +232,16 @@ internal static class PeerUiPlugins
 
         valueProp.SetValue(entry, value);
         return true;
+    }
+
+    private static bool? ReadConfigBool(object cfg, string fieldName)
+    {
+        object entry = cfg.GetType()
+            .GetField(fieldName, BindingFlags.Public | BindingFlags.Instance)
+            ?.GetValue(cfg);
+        PropertyInfo valueProp = entry?.GetType().GetProperty("Value");
+        object current = valueProp?.GetValue(entry);
+        return current as bool?;
     }
 
     private static Assembly FindAssembly(string name)
